@@ -1,0 +1,12 @@
+{
+    "name": "YBR Extension",
+    "description": "YBR Product Listing Extension",
+    "version": "1.0",
+    "manifest_version": 2,
+    "background": {
+        "scripts": ["./background.js"]
+    },
+    "permissions": ["tabs", "https://www.amazon.com/*", "storage", "webNavigation"]
+
+    
+}
