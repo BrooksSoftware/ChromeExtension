@@ -6,7 +6,15 @@
     "background": {
         "scripts": ["./background.js"]
     },
-    "permissions": ["tabs", "https://www.amazon.com/*", "storage", "webNavigation"]
+    "page_action":{
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "tabs",  
+        "<all_urls>", 
+        "storage", 
+        "webNavigation", 
+        "declarativeContent" ]
 
     
 }

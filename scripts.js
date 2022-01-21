@@ -26,7 +26,8 @@ console.log("a-offscreen123"+price.innerHTML);
 //add button 
 button_add = document.getElementById('titleSection');
 var button = document.createElement("button");
-button.innerHTML = "Save to YBR";
+button.id = "btnYbr";
+button.innerHTML = "Add to YBR";
 button.addEventListener('click', function() {
     alert("boss aljon");
 	var settings = {
