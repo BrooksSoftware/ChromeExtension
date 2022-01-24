@@ -15,7 +15,9 @@
         "<all_urls>", 
         "storage", 
         "webNavigation", 
-        "declarativeContent" ]
+        "declarativeContent" ],
+
+    "web_accessible_resources": ["YBR-Logo.png"]
 
     
 }
