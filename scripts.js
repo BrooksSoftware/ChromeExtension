@@ -112,8 +112,14 @@ button.addEventListener('click', function() {
 		if (err !== null) {
 			alert('Something went wrong: ' + err);
 		} else {
+			let resArr = [];
 			let res = data.response.results;
-			console.log(res);
+			for(var i = 0; i < res.length; i++){
+				var option = document.createElement("option");
+				option.text = res[i]["List Name"];
+				option.value = res[i]["_id"];
+				document.getElementById('ybr').appendChild(option);
+			}
 		}
 		});
 	
