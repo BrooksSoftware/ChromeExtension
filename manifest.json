@@ -7,6 +7,13 @@
         "scripts": ["./background.js"],
         "persistent": false
     },
+    "content_scripts":[
+        {
+            "css": ["mystyles.css"],
+            "matches": ["<all_urls>"],
+            "js": ["UI.js"]
+        }
+    ],
     "page_action":{
         "default_popup": "popup.html"
     },

@@ -26,7 +26,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.webNavigation.onCompleted.addListener(function(details) {
   console.log(details);
-  chrome.tabs.insertCSS(null, {file: './mystyles.css'});
+  // chrome.tabs.insertCSS(null, {file: './mystyles.css'});
   chrome.tabs.executeScript(null, {file: './scripts.js'});
 }, {
   url: [{
@@ -35,7 +35,7 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
 });
 
 chrome.webNavigation.onCompleted.addListener(function(details) {
-  chrome.tabs.insertCSS(null, {file: './mystyles.css'});
+  // chrome.tabs.insertCSS(null, {file: './mystyles.css'});
   chrome.tabs.executeScript(null, {file: './zipperbuy.js'});
 }, {
   url: [{
@@ -49,7 +49,6 @@ chrome.browserAction.onClicked.addListener(establishPort);
 
 // Function to establish connection
 function establishPort(tab) {
-
     // Pass the action to the correct tab
     let port = chrome.tabs.connect(tab.id, {name: "establish_connection"});
     
@@ -75,3 +74,4 @@ function establishPort(tab) {
 
     
 }
+
