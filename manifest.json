@@ -11,7 +11,7 @@
         {
             "css": ["mystyles.css"],
             "matches": ["<all_urls>"],
-            "js": ["UI.js"]
+            "js": ["UI.js", "jquery.js"]
         }
     ],
     "page_action":{

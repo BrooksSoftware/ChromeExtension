@@ -1,93 +1,145 @@
 #btnYbr{
-    color: white;
-    background-color: green;
-    padding: 15px 20px;
-    border: 0px;
-    border-radius: 50px;
-    width: 200px;
-    height: max-content;
+  color: white;
+  background-color: green;
+  padding: 15px 20px;
+  border: 0px;
+  border-radius: 50px;
+  width: 200px;
+  height: max-content;
+  margin: 10px 10px 10px 0px;
 }
+
+#deleteFloatingBtn{
+  color: white;
+  background-color: red;
+  padding: 15px 20px;
+  border: 0px;
+  border-radius: 50px;
+  width: 200px;
+  height: max-content;
+  position: fixed;
+  top: 65%;
+  left: 82%;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+
+#uploadFloatingBtn{
+  color: white;
+  background-color: blue;
+  padding: 15px 20px;
+  border: 0px;
+  border-radius: 50px;
+  width: 200px;
+  height: max-content;
+  position: fixed;
+  top: 75%;
+  left: 82%;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+
+#exportFloatingBtn{
+  color: white;
+  background-color: green;
+  padding: 15px 20px;
+  border: 0px;
+  border-radius: 50px;
+  width: 200px;
+  height: max-content;
+  position: fixed;
+  top: 85%;
+  left: 82%;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+
 .modal {
-    --gap: 15px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    padding: var(--gap);
-    background: rgba(0, 0, 0, 0.5);
-    font-family: sans-serif;
-  }
-  
-  .modal__inner {
-    background: #ffffff;
-    width: 100%;
-    max-width: 300px;
-    overflow: hidden;
-    border-radius: 4px;
-  }
-  
-  .modal__top {
-    display: flex;
-    align-items: center;
-    background-color: #eeeeee;
-  }
-  
-  .modal__title {
-    flex-grow: 1;
-    padding: 0 var(--gap);
-    font-size: 18px;
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #103538;
-  }
-  
-  .modal__close {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    padding: var(--gap);
-    background: none;
-    border: none;
-    outline: none;
-  }
-  
-  .modal__content {
-    padding: 0 var(--gap);
-    padding-top: 10px;
-    line-height: 1.5;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-align: center;
-  }
-  
-  .modal__bottom {
-    text-align: right;
-    padding: 0 var(--gap) var(--gap) var(--gap);
-    padding: 15px;
-    color: white;
-  }
-  
-  .modal__button {
-    display: inline-block;
-    padding: 6px 12px;
-    background: green;
-    border: none;
-    outline: none;
-    border-radius: 3px;
-    color: #ffffff;
-    cursor: pointer;
-    font-size: 18px;
-  }
-  
-  .modal__button:not(:last-child) {
-    margin-right: var(--gap);
-  }
-  
-  .modal__button:hover {
-    background: darkgreen;
-  }
-  
+  --gap: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: var(--gap);
+  background: rgba(0, 0, 0, 0.5);
+  font-family: sans-serif;
+}
+
+.modal__inner {
+  background: #ffffff;
+  width: 100%;
+  max-width: 300px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.modal__top {
+  display: flex;
+  align-items: center;
+  background-color: #eeeeee;
+}
+
+.modal__title {
+  flex-grow: 1;
+  padding: 0 var(--gap);
+  font-size: 18px;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #103538;
+}
+
+.modal__close {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: var(--gap);
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.modal__content {
+  padding: 0 var(--gap);
+  padding-top: 10px;
+  line-height: 1.5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+.modal__bottom {
+  text-align: right;
+  padding: 0 var(--gap) var(--gap) var(--gap);
+  padding: 15px;
+  color: white;
+}
+
+.modal__button {
+  display: inline-block;
+  padding: 6px 12px;
+  background: green;
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.modal__button:not(:last-child) {
+  margin-right: var(--gap);
+}
+
+.modal__button:hover {
+  background: darkgreen;
+}
