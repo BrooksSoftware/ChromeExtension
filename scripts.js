@@ -228,6 +228,26 @@ $("div.s-result-item").each(function() {
   console.log(divId);
 });*/
 
+//get similar products
+var products = [];
+var similarProducts = document.querySelectorAll('.comparison_table_image_row .a-link-normal');
+for (var i=0; i<similarProducts.length; i++){
+	var nametext = similarProducts[i].textContent;
+	var cleantext = nametext.replace(/\s+/g, ' ').trim();
+	var cleanlink = similarProducts[i].href;
+
+	products.push([cleantext,cleanlink]);
+};
+//get recently viewed and featured products
+var recentlyViewednFeaturedProducts = document.querySelectorAll('[data-faceoutkataname="GeneralFaceout"] .a-link-normal');
+for (var i=0; i<recentlyViewednFeaturedProducts.length; i++){
+	var nametext = recentlyViewednFeaturedProducts[i].textContent;
+	var cleantext = nametext.replace(/\s+/g, ' ').trim();
+	var cleanlink = recentlyViewednFeaturedProducts[i].href;
+
+	products.push([cleantext,cleanlink]);
+};
+
 //delete product floating btn
 var deleteFloatingBtn = document.createElement( 'button' );
 
@@ -251,4 +271,39 @@ var exportFloatingBtn = document.createElement( 'button' );
 document.body.appendChild( exportFloatingBtn );
 
 exportFloatingBtn.id = 'exportFloatingBtn';
-exportFloatingBtn.innerHTML = "Export Product";
+exportFloatingBtn.innerHTML = "Export "+products.length+" Products";
+
+function exportToExcel(){
+	var htmls = "";
+	var uri = 'data:application/vnd.ms-excel;base64,';
+	var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'; 
+	var base64 = function(s) {
+		return window.btoa(unescape(encodeURIComponent(s)))
+	};
+
+	var format = function(s, c) {
+		return s.replace(/{(\w+)}/g, function(m, p) {
+			return c[p];
+		})
+	};
+
+	htmls = '<table><thead><th>Links</th></thead><tbody>';
+	for (var i=0; i<products.length; i++) {
+		htmls += '<tr><td>'+products[i][1]+'</td></tr>';
+	};
+
+	var ctx = {
+		worksheet : 'Worksheet',
+		table : htmls
+	}
+
+
+	var link = document.createElement("a");
+	link.download = "export.xls";
+	link.href = uri + base64(format(template, ctx));
+	link.click();
+}
+
+exportFloatingBtn.addEventListener('click', function() {
+	exportToExcel();
+}, false);
