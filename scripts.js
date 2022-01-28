@@ -241,9 +241,9 @@ $("div.s-result-item").each(function() {
 //get similar products
 var products = [];
 
-var similarProducts = document.querySelectorAll('.a-link-normal');
-for (var i=0; i<similarProducts.length; i++){
-	var cleanlink = similarProducts[i].href;
+var productUrls = document.querySelectorAll('.a-link-normal');
+for (var i=0; i<productUrls.length; i++){
+	var cleanlink = productUrls[i].href;
 	var regex = RegExp("https://www.amazon.com/([\\w-]+/)?(dp|gp/product)/(\\w+/)?(\\w{10})");
 	m = cleanlink.match(regex);
 	if (m) {
