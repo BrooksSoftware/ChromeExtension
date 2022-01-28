@@ -86,10 +86,10 @@ button.addEventListener('click', function() {
 		{
 		  label: "Save",
 		  onClick: (modal) => {
-			  
-				var lot = $("#ybr option:selected").attr("value");
-				// var description = $('#feature-bullets').children('ul').children('li').children('span').text();
+				var lot = $("#ybr option:selected").val();
 
+				var description = $('#feature-bullets').children('ul').children('li').children('span').text();
+				console.log(description);
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
 				  "method": "POST",
@@ -98,31 +98,27 @@ button.addEventListener('click', function() {
 					"content-type": "text/plain"
 				  },
 				  "data": '{"Title":"'+productTitle.innerHTML+'", "Lot":"'+lot+'"}',
-				  success: function(response){
-						console.log(JSON.parse(response));
-				  }
 				};
 			
 				$.ajax(settings).done(function (response) {
-					// let selected = $("#ybr option:selected").attr("prod")
-					// // console.log(selected.split(','));
+					let list = $("#ybr option:selected").val();
+					let res = JSON.parse(response)
+					let selected = $("#ybr option:selected").attr("prod");
+					let prod = selected.concat(',', res.id);
 
-					// fetch("https://ybr.app/version-test/api/1.1/obj/test/1643259862393x416304162185907600", {
-					// method: "PATCH",
-					// body: JSON.stringify({
-					// prod: selected.split(',')
-					// prod: 
-					// }),
-					// headers: {
-					// "Content-type": "application/json; charset=UTF-8"
-					// }
-					// }).then(response => response.json())
-					// .then(json => {console.log(json)})
-				//   console.log("responsejrb"+ response.id);
-				//   console.log("responsejrb"+ JSON.stringify(response));
-				}).done(json => {console.log(json.id)});
+					fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
+					method: "PATCH",
+					body: JSON.stringify({
+						Products: prod.split(',')
+					}),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8"
+					}
+					});
+					
+				});
 		  },
-		  triggerClose: false
+		//   triggerClose: false
 		}
 	  ]);
 
@@ -147,7 +143,6 @@ button.addEventListener('click', function() {
 			alert('Something went wrong: ' + err);
 		} else {
 			let res = data.response.results;
-			console.log(res)
 			for(var i = 0; i < res.length; i++){
 				var option = document.createElement("option");
 				option.text = res[i]["List Name"];
