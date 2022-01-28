@@ -30,50 +30,50 @@ console.log("a-offscreen123"+price.innerHTML);
 //Show Modal
 function showModal(contentHtml, buttons) {
 	const modal = document.createElement("div");
-  
+
 	modal.classList.add("modal");
 	modal.innerHTML = `
-		  <div class="modal__inner">
-			  <div class="modal__top">
-				  <div class="modal__title">Save Product</div>
-				  <button class="modal__close" type="button">
-					  <span class="material-icons">X</span>
-				  </button>
-			  </div>
-			  <div class="modal__content">
-			  <select name="ybr" id="ybr" style="width: 230px;">
-			  $('#ybr').append("<option value='ybr'>Choose a List</option>");
-			</select>
-			  </div>
-			  <div id="btnSave" class="modal__bottom"></div>
-		  </div>
-	  `;
+	<div class="modal__inner">
+	<div class="modal__top">
+	<div class="modal__title">Save Product</div>
+	<button class="modal__close" type="button">
+	<span class="material-icons">X</span>
+	</button>
+	</div>
+	<div class="modal__content">
+	<select name="ybr" id="ybr" style="width: 230px;">
+	$('#ybr').append("<option value='ybr'>Choose a List</option>");
+	</select>
+	</div>
+	<div id="btnSave" class="modal__bottom"></div>
+	</div>
+	`;
 
 
-  
+
 	for (const button of buttons) {
-	  const element = document.createElement("button");
-  
-	  element.setAttribute("type", "button");
-	  element.classList.add("modal__button");
-	  element.textContent = button.label;
-	  element.addEventListener("click", () => {
-		if (button.triggerClose) {
-		  document.body.removeChild(modal);
-		}
-  
-		button.onClick(modal);
-	  });
-  
-	  modal.querySelector(".modal__bottom").appendChild(element);
+		const element = document.createElement("button");
+
+		element.setAttribute("type", "button");
+		element.classList.add("modal__button");
+		element.textContent = button.label;
+		element.addEventListener("click", () => {
+			if (button.triggerClose) {
+				document.body.removeChild(modal);
+			}
+
+			button.onClick(modal);
+		});
+
+		modal.querySelector(".modal__bottom").appendChild(element);
 	}
-  
+
 	modal.querySelector(".modal__close").addEventListener("click", () => {
-	  document.body.removeChild(modal);
+		document.body.removeChild(modal);
 	});
-  
+
 	document.body.appendChild(modal);
-  }
+}
 
 
 //add button 
@@ -82,27 +82,27 @@ var button = document.createElement("button");
 button.id = "btnYbr";
 button.innerHTML = "Add to YBR";
 button.addEventListener('click', function() {
-    showModal("", [
-		{
-		  label: "Save",
-		  onClick: (modal) => {
-			  
-				var lot = $("#ybr option:selected").attr("value");
+	showModal("", [
+	{
+		label: "Save",
+		onClick: (modal) => {
+
+			var lot = $("#ybr option:selected").attr("value");
 				// var description = $('#feature-bullets').children('ul').children('li').children('span').text();
 
 				var settings = {
-				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
-				  "method": "POST",
-				  "timeout": 0,
-				  "headers": {
-					"content-type": "text/plain"
-				  },
-				  "data": '{"Title":"'+productTitle.innerHTML+'", "Lot":"'+lot+'"}',
-				  success: function(response){
+					"url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
+					"method": "POST",
+					"timeout": 0,
+					"headers": {
+						"content-type": "text/plain"
+					},
+					"data": '{"Title":"'+productTitle.innerHTML+'", "Lot":"'+lot+'"}',
+					success: function(response){
 						console.log(JSON.parse(response));
-				  }
+					}
 				};
-			
+
 				$.ajax(settings).done(function (response) {
 					// let selected = $("#ybr option:selected").attr("prod")
 					// // console.log(selected.split(','));
@@ -120,42 +120,42 @@ button.addEventListener('click', function() {
 					// .then(json => {console.log(json)})
 				//   console.log("responsejrb"+ response.id);
 				//   console.log("responsejrb"+ JSON.stringify(response));
-				}).done(json => {console.log(json.id)});
-		  },
-		  triggerClose: false
+			}).done(json => {console.log(json.id)});
+			},
+			triggerClose: false
 		}
-	  ]);
+		]);
 
-	  var getJSON = function(url, callback) {
-			var xhr = new XMLHttpRequest();
-			xhr.open('GET', url, true);
-			xhr.responseType = 'json';
-			xhr.onload = function() {
+	var getJSON = function(url, callback) {
+		var xhr = new XMLHttpRequest();
+		xhr.open('GET', url, true);
+		xhr.responseType = 'json';
+		xhr.onload = function() {
 			var status = xhr.status;
 			if (status === 200) {
 				callback(null, xhr.response);
 			} else {
 				callback(status, xhr.response);
 			}
-			};
-			xhr.send();
 		};
+		xhr.send();
+	};
 
-		getJSON('https://ybr.app/version-test/api/1.1/obj/product_list',
+	getJSON('https://ybr.app/version-test/api/1.1/obj/product_list',
 		function(err, data) {
-		if (err !== null) {
-			alert('Something went wrong: ' + err);
-		} else {
-			let res = data.response.results;
-			console.log(res)
-			for(var i = 0; i < res.length; i++){
-				var option = document.createElement("option");
-				option.text = res[i]["List Name"];
-				option.value = res[i]["_id"];
-				option.setAttribute("prod", res[i]["Products"]);
-				document.getElementById('ybr').appendChild(option);
+			if (err !== null) {
+				alert('Something went wrong: ' + err);
+			} else {
+				let res = data.response.results;
+				console.log(res)
+				for(var i = 0; i < res.length; i++){
+					var option = document.createElement("option");
+					option.text = res[i]["List Name"];
+					option.value = res[i]["_id"];
+					option.setAttribute("prod", res[i]["Products"]);
+					document.getElementById('ybr').appendChild(option);
+				}
 			}
-		}
 		});
 	
 	// var settings = {
@@ -178,12 +178,12 @@ button_add.appendChild(button);
 
 
 // $.getJSON('ybr.app/version-test/api/1.1/obj/product_list', function(data) {
-        
+
 // 	var items = [];
 // 	  $.each( data, function( key, val ) {
 // 		items.push( "<li id='" + key + "'>" + val + "</li>" );
 // 	  });
-	 
+
 // 	  $( "<ul/>", {
 // 		"class": "my-new-list",
 // 		html: items.join( "" )
@@ -203,7 +203,7 @@ button_add.appendChild(button);
 	// 	  str += s1ar[i].value + ','; 
 	// 	}
 	//   }
-	  
+
 
 	//   $.ajax({
 	// 	type: "GET",
@@ -233,6 +233,26 @@ $("div.s-result-item").each(function() {
   console.log(divId);
 });*/
 
+//get similar products
+var products = [];
+var similarProducts = document.querySelectorAll('.comparison_table_image_row .a-link-normal');
+for (var i=0; i<similarProducts.length; i++){
+	var nametext = similarProducts[i].textContent;
+	var cleantext = nametext.replace(/\s+/g, ' ').trim();
+	var cleanlink = similarProducts[i].href;
+
+	products.push([cleantext,cleanlink]);
+};
+//get recently viewed and featured products
+var recentlyViewednFeaturedProducts = document.querySelectorAll('[data-faceoutkataname="GeneralFaceout"] .a-link-normal');
+for (var i=0; i<recentlyViewednFeaturedProducts.length; i++){
+	var nametext = recentlyViewednFeaturedProducts[i].textContent;
+	var cleantext = nametext.replace(/\s+/g, ' ').trim();
+	var cleanlink = recentlyViewednFeaturedProducts[i].href;
+
+	products.push([cleantext,cleanlink]);
+};
+
 //delete product floating btn
 var deleteFloatingBtn = document.createElement( 'button' );
 
@@ -256,4 +276,39 @@ var exportFloatingBtn = document.createElement( 'button' );
 document.body.appendChild( exportFloatingBtn );
 
 exportFloatingBtn.id = 'exportFloatingBtn';
-exportFloatingBtn.innerHTML = "Export Product";
+exportFloatingBtn.innerHTML = "Export "+products.length+" Products";
+
+function exportToExcel(){
+	var htmls = "";
+	var uri = 'data:application/vnd.ms-excel;base64,';
+	var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'; 
+	var base64 = function(s) {
+		return window.btoa(unescape(encodeURIComponent(s)))
+	};
+
+	var format = function(s, c) {
+		return s.replace(/{(\w+)}/g, function(m, p) {
+			return c[p];
+		})
+	};
+
+	htmls = '<table><thead><th>Links</th></thead><tbody>';
+	for (var i=0; i<products.length; i++) {
+		htmls += '<tr><td>'+products[i][1]+'</td></tr>';
+	};
+
+	var ctx = {
+		worksheet : 'Worksheet',
+		table : htmls
+	}
+
+
+	var link = document.createElement("a");
+	link.download = "export.xls";
+	link.href = uri + base64(format(template, ctx));
+	link.click();
+}
+
+exportFloatingBtn.addEventListener('click', function() {
+	exportToExcel();
+}, false);
