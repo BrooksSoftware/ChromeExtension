@@ -1,4 +1,4 @@
-#btnYbr{
+#btnYbr {
   color: white;
   background-color: green;
   padding: 10px 20px;
@@ -9,7 +9,7 @@
   margin: 10px 10px 10px 0px;
 }
 
-#deleteFloatingBtn{
+#deleteFloatingBtn {
   color: white;
   background-color: red;
   padding: 15px 20px;
@@ -24,9 +24,10 @@
   transition: all 0.3s ease 0s;
   cursor: pointer;
   outline: none;
+  z-index: 1;
 }
 
-#uploadFloatingBtn{
+#uploadFloatingBtn {
   color: white;
   background-color: blue;
   padding: 15px 20px;
@@ -41,9 +42,10 @@
   transition: all 0.3s ease 0s;
   cursor: pointer;
   outline: none;
+  z-index: 1;
 }
 
-#exportFloatingBtn{
+#exportFloatingBtn {
   color: white;
   background-color: green;
   padding: 15px 20px;
@@ -58,6 +60,7 @@
   transition: all 0.3s ease 0s;
   cursor: pointer;
   outline: none;
+  z-index: 1;
 }
 
 .modal {
@@ -95,7 +98,7 @@
   padding: 0 var(--gap);
   font-size: 18px;
   text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #103538;
 }
 
@@ -113,7 +116,7 @@
   padding: 0 var(--gap);
   padding-top: 10px;
   line-height: 1.5;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
 }
 

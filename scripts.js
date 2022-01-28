@@ -240,23 +240,15 @@ $("div.s-result-item").each(function() {
 
 //get similar products
 var products = [];
+
+const currentProduct = window.location.href;
+products.push([currentProduct]);
+
 var similarProducts = document.querySelectorAll('.comparison_table_image_row .a-link-normal');
 for (var i=0; i<similarProducts.length; i++){
-	var nametext = similarProducts[i].textContent;
-	var cleantext = nametext.replace(/\s+/g, ' ').trim();
 	var cleanlink = similarProducts[i].href;
-
-	products.push([cleantext,cleanlink]);
-};
-//get recently viewed and featured products
-var recentlyViewednFeaturedProducts = document.querySelectorAll('[data-faceoutkataname="GeneralFaceout"] .a-link-normal');
-for (var i=0; i<recentlyViewednFeaturedProducts.length; i++){
-	var nametext = recentlyViewednFeaturedProducts[i].textContent;
-	var cleantext = nametext.replace(/\s+/g, ' ').trim();
-	var cleanlink = recentlyViewednFeaturedProducts[i].href;
-
-	products.push([cleantext,cleanlink]);
-};
+	products.push([cleanlink]);
+}
 
 //delete product floating btn
 var deleteFloatingBtn = document.createElement( 'button' );
