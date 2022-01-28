@@ -18,7 +18,7 @@ add_save_to_ybr_button();
 //product page
 function add_save_to_ybr_button(){
 //get product title
-productTitle = document.getElementById('productTitle');
+var productTitle = document.getElementById('productTitle');
 // console.log("title"+productTitle.innerHTML);
 //get product price
 price_parent = document.getElementById('corePrice_desktop');
@@ -87,17 +87,19 @@ button.addEventListener('click', function() {
 		  label: "Save",
 		  onClick: (modal) => {
 				var lot = $("#ybr option:selected").val();
-
-				var description = $('#feature-bullets').children('ul').children('li').children('span').text();
-				console.log(description);
+				var description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
+				var data = '{"Title":"'+productTitle.innerHTML+'", "description":"'+description+'"}';
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
 				  "method": "POST",
 				  "timeout": 0,
 				  "headers": {
-					"content-type": "text/plain"
+					"Content-Type": "text/plain"
 				  },
-				  "data": '{"Title":"'+productTitle.innerHTML+'", "Lot":"'+lot+'"}',
+				  "data": data,
+				  success:function(){
+					  console.log(description);
+				  }
 				};
 			
 				$.ajax(settings).done(function (response) {
@@ -116,6 +118,10 @@ button.addEventListener('click', function() {
 					}
 					});
 					
+				}).then((responseJson) => {
+
+				}).catch((err) =>{
+					console.log("errrr" + JSON.stringify(err));
 				});
 		  },
 		//   triggerClose: false
