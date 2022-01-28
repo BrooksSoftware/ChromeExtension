@@ -116,15 +116,19 @@ button.addEventListener('click', function() {
 					headers: {
 						"Content-type": "application/json; charset=UTF-8"
 					}
+					}).then((response) =>{
+						alert('Successfully added to list');
 					});
 					
 				}).then((responseJson) => {
-
+					$('.modal').hide();
+					alert('Successfully saved.');
 				}).catch((err) =>{
 					console.log("errrr" + JSON.stringify(err));
 				});
 		  },
-		//   triggerClose: false
+		  
+		  triggerClose: false
 		}
 	  ]);
 
