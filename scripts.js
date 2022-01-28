@@ -281,7 +281,7 @@ function exportToExcel(){
 
 	htmls = '<table><thead><th>Links</th></thead><tbody>';
 	for (var i=0; i<products.length; i++) {
-		htmls += '<tr><td>'+products[i][1]+'</td></tr>';
+		htmls += '<tr><td>'+products[i][0]+'</td></tr>';
 	};
 
 	var ctx = {
