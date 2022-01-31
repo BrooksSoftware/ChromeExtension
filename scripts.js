@@ -109,7 +109,6 @@ button.addEventListener('click', function() {
 			
 				$.ajax(settings).done(function (response) {
 					let list = $("#ybr option:selected").val();
-					alert(response);
 					let res = JSON.parse(response)
 					let selected = $("#ybr option:selected").attr("prod");
 					let prod = selected.concat(',', res.id);
