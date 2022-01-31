@@ -228,7 +228,7 @@ $("div.s-result-item").each(function() {
   console.log(divId);
 });*/
 
-//get similar products
+//get webpage products
 var products = [];
 
 var productUrls = document.querySelectorAll('.a-link-normal');
