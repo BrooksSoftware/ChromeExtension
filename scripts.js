@@ -86,9 +86,10 @@ button.addEventListener('click', function() {
 		{
 		  label: "Save",
 		  onClick: (modal) => {
+			  	var img = $('#imgTagWrapperId').children('img');
 				var lot = $("#ybr option:selected").val();
 				var description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
-				var data = '{"Title":"'+productTitle.innerHTML+'", "description":"'+description+'"}';
+				var data = '{"Title":"'+productTitle.innerHTML+'"}';
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
 				  "method": "POST",
@@ -99,11 +100,16 @@ button.addEventListener('click', function() {
 				  "data": data,
 				  success:function(){
 					  console.log(description);
+				  },
+				  error:function(err){
+					  alert(img.attr('src'));
+					  alert(err);
 				  }
 				};
 			
 				$.ajax(settings).done(function (response) {
 					let list = $("#ybr option:selected").val();
+					alert(response);
 					let res = JSON.parse(response)
 					let selected = $("#ybr option:selected").attr("prod");
 					let prod = selected.concat(',', res.id);
@@ -118,10 +124,12 @@ button.addEventListener('click', function() {
 					}
 					}).then((response) =>{
 						alert('Successfully added to list');
+					}).catch((err) => {
+						alert('Failed adding to list');
 					});
 					
 				}).then((responseJson) => {
-					$('.modal').hide();
+					// $('.modal').hide();
 					alert('Successfully saved.');
 				}).catch((err) =>{
 					console.log("errrr" + JSON.stringify(err));
