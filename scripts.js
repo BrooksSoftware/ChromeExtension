@@ -246,25 +246,20 @@ $("div.s-result-item").each(function() {
   console.log(divId);
 });*/
 
-//get similar products
+//get webpage products
 var products = [];
-var similarProducts = document.querySelectorAll('.comparison_table_image_row .a-link-normal');
-for (var i=0; i<similarProducts.length; i++){
-	var nametext = similarProducts[i].textContent;
-	var cleantext = nametext.replace(/\s+/g, ' ').trim();
-	var cleanlink = similarProducts[i].href;
 
-	products.push([cleantext,cleanlink]);
+var productUrls = document.querySelectorAll('.a-link-normal');
+for (var i=0; i<productUrls.length; i++){
+	var cleanlink = productUrls[i].href;
+	var regex = RegExp("https://www.amazon.com/([\\w-]+/)?(dp|gp/product)/(\\w+/)?(\\w{10})");
+	m = cleanlink.match(regex);
+	if (m) {
+		products.push([m.toString().split(',')[0]]);
+	}
 };
-//get recently viewed and featured products
-var recentlyViewednFeaturedProducts = document.querySelectorAll('[data-faceoutkataname="GeneralFaceout"] .a-link-normal');
-for (var i=0; i<recentlyViewednFeaturedProducts.length; i++){
-	var nametext = recentlyViewednFeaturedProducts[i].textContent;
-	var cleantext = nametext.replace(/\s+/g, ' ').trim();
-	var cleanlink = recentlyViewednFeaturedProducts[i].href;
 
-	products.push([cleantext,cleanlink]);
-};
+var uniqueUrl = Array.from(new Set(products.map(JSON.stringify))).map(JSON.parse);
 
 //delete product floating btn
 var deleteFloatingBtn = document.createElement( 'button' );
@@ -289,7 +284,7 @@ var exportFloatingBtn = document.createElement( 'button' );
 document.body.appendChild( exportFloatingBtn );
 
 exportFloatingBtn.id = 'exportFloatingBtn';
-exportFloatingBtn.innerHTML = "Export "+products.length+" Products";
+exportFloatingBtn.innerHTML = "Export "+uniqueUrl.length+" Products";
 
 function exportToExcel(){
 	var htmls = "";
@@ -306,8 +301,8 @@ function exportToExcel(){
 	};
 
 	htmls = '<table><thead><th>Links</th></thead><tbody>';
-	for (var i=0; i<products.length; i++) {
-		htmls += '<tr><td>'+products[i][1]+'</td></tr>';
+	for (var i=0; i<uniqueUrl.length; i++) {
+		htmls += '<tr><td>'+uniqueUrl[i][0]+'</td></tr>';
 	};
 
 	var ctx = {
