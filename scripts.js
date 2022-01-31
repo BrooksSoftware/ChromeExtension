@@ -112,11 +112,17 @@ button.addEventListener('click', function() {
 					let res = JSON.parse(response)
 					let selected = $("#ybr option:selected").attr("prod");
 					let prod = selected.concat(',', res.id);
+					let prodList = [];
+
+					if(selected === 'undefined'){
+					prodList.push(res.id)
+					}
+					else{ prodList = prod.split(',') }
 
 					fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
 					method: "PATCH",
 					body: JSON.stringify({
-						Products: prod.split(',')
+						Products: prodList
 					}),
 					headers: {
 						"Content-type": "application/json; charset=UTF-8"
