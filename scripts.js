@@ -92,11 +92,11 @@ button.addEventListener('click', function() {
 				var imgres = JSON.stringify(imgList);
 
 				var lot = $("#ybr option:selected").val();
-				var description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
-				var data = '{"Title":"'+productTitle.innerHTML+'", '
-					+'"COGS":"'+price.innerHTML.replace('$','')+'", '
-					+'"description":"'+description+'", '
-					+'"Images_text":'+imgres+', "Images":'+imgres+'}';
+				var description = $('#feature-bullets').children('ul').children('li').eq(1).children('span').text();
+				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "Images_text":'+imgres+', "Images":'+imgres+', "description":"'+description+'"}';
+				
+				console.log(description);
+
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
 				  "method": "POST",
@@ -289,6 +289,74 @@ document.body.appendChild( uploadFloatingBtn );
 
 uploadFloatingBtn.id = 'uploadFloatingBtn';
 uploadFloatingBtn.innerHTML = "Upload Products";
+
+function UploadBulk(){
+	
+	$('body').on('click', '#uploadFloatingBtn', function(e){
+        e.preventDefault();
+
+        $.ajax({
+            url: 'https://ybr.app/version-test/api/1.1/obj/products_uniques',
+            type: 'POST',
+            xhr: function() {
+                var myXhr = $.ajaxSettings.xhr();
+                return myXhr;
+            },
+            success: function (data) {
+                alert("Data Uploaded!");
+				var description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
+				var data = '{"Title":"'+productTitle.innerHTML+'"}';
+				var settings = {
+				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
+				  "method": "POST",
+				  "timeout": 0,
+				  "headers": {
+					"Content-Type": "text/plain"
+				  },
+				  "data": data,
+				  success:function(){
+					  console.log(description);
+				  },
+				  error:function(err){
+					  alert(img.attr('src'));
+					  alert(err);
+				  }
+				};
+			
+				$.ajax(settings).done(function (response) {
+
+					fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
+					method: "PATCH",
+					body: JSON.stringify({
+						Products: prod.split(',')
+					}),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8"
+					}
+					}).then((response) =>{
+						alert('Successfully added to list');
+					}).catch((err) => {
+						alert('Failed adding to list');
+					});
+					
+				}).then((responseJson) => {
+					// $('.modal').hide();
+					alert('Successfully saved.');
+				}).catch((err) =>{
+					console.log("errrr" + JSON.stringify(err));
+				});
+            }
+        });
+        return false;
+})
+}
+
+uploadFloatingBtn.addEventListener('click', function() {
+	UploadBulk();
+}, false);
+
+
+
 
 //export product floating btn
 var exportFloatingBtn = document.createElement( 'button' );
