@@ -93,7 +93,10 @@ button.addEventListener('click', function() {
 
 				var lot = $("#ybr option:selected").val();
 				var description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
-				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "description":"'+description+'", "Images_text":'+imgres+'}';
+				var data = '{"Title":"'+productTitle.innerHTML+'", '
+					+'"COGS":"'+price.innerHTML.replace('$','')+'", '
+					+'"description":"'+description+'", '
+					+'"Images_text":'+imgres+', "Images":'+imgres+'}';
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
 				  "method": "POST",
