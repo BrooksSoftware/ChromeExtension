@@ -87,9 +87,13 @@ button.addEventListener('click', function() {
 		  label: "Save",
 		  onClick: (modal) => {
 			  	var img = $('#imgTagWrapperId').children('img');
+				var imgList = [];
+				imgList.push(img[0].src);
+				var imgres = JSON.stringify(imgList);
+
 				var lot = $("#ybr option:selected").val();
 				var description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
-				var data = '{"Title":"'+productTitle.innerHTML+'"}';
+				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "description":"'+description+'", "Images_text":'+imgres+'}';
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
 				  "method": "POST",
@@ -103,7 +107,7 @@ button.addEventListener('click', function() {
 				  },
 				  error:function(err){
 					  alert(img.attr('src'));
-					  alert(err);
+					//   alert(err);
 				  }
 				};
 			
@@ -118,7 +122,7 @@ button.addEventListener('click', function() {
 					prodList.push(res.id)
 					}
 					else{ prodList = prod.split(',') }
-
+					console.log(res.id);
 					fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
 					method: "PATCH",
 					body: JSON.stringify({
@@ -129,15 +133,15 @@ button.addEventListener('click', function() {
 					}
 					}).then((response) =>{
 						alert('Successfully added to list');
+						$('.modal__close').click();
 					}).catch((err) => {
 						alert('Failed adding to list');
 					});
 					
 				}).then((responseJson) => {
-					// $('.modal').hide();
 					alert('Successfully saved.');
 				}).catch((err) =>{
-					console.log("errrr" + JSON.stringify(err));
+					// console.log("errrr" + JSON.stringify(err));
 				});
 		  },
 		  
