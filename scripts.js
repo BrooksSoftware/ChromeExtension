@@ -86,6 +86,7 @@ button.addEventListener('click', function() {
 		{
 		  label: "Save",
 		  onClick: (modal) => {
+			  	var link = window.location.href;
 			  	var img = $('#imgTagWrapperId').children('img');
 				var imgList = [];
 				imgList.push(img[0].src);
@@ -93,9 +94,13 @@ button.addEventListener('click', function() {
 
 				var lot = $("#ybr option:selected").val();
 				var description = $('#feature-bullets').children('ul').children('li').eq(1).children('span').text();
-				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "Images_text":'+imgres+', "Images":'+imgres+', "description":"'+description+'"}';
+				if($('#feature-bullets').children('ul').children('li').attr('id') === 'replacementPartsFitmentBullet'){
+					description = $('#feature-bullets').children('ul').children('li').eq(1).children('span').text();
+				}else{
+					description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
+				}
+				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "Images_text":'+imgres+', "Images":'+imgres+', "description":"'+description+'", "Listing URL":"'+link+'"}';
 				
-				console.log(description);
 
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
@@ -109,8 +114,7 @@ button.addEventListener('click', function() {
 					  console.log(description);
 				  },
 				  error:function(err){
-					  alert(img.attr('src'));
-					//   alert(err);
+					  alert("Something went wrong.");
 				  }
 				};
 			
@@ -144,7 +148,7 @@ button.addEventListener('click', function() {
 				}).then((responseJson) => {
 					alert('Successfully saved.');
 				}).catch((err) =>{
-					// console.log("errrr" + JSON.stringify(err));
+					alert('Something went wrong');
 				});
 		  },
 		  
