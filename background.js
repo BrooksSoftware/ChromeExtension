@@ -1,5 +1,23 @@
 'use strict';
 
+
+
+chrome.cookies.get({ url: 'https://ybr.app/version-test/ce_login', name: 'ybr-gig_u1_testmain'},
+  function(cookie){
+    if(cookie){
+      chrome.runtime.onMessage.addListener(
+        function(request, sender, sendResponse) {
+          console.log(sender.tab ?
+                      "from a content script:" + sender.tab.url :
+                      "from the extension");
+          if (request.greeting === "hello")
+            sendResponse({farewell: cookie.value});
+        }
+      );
+    }else{ alert('cant load cookie') }
+  }
+);
+
 chrome.runtime.onInstalled.addListener(function() {
 
   chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
@@ -22,6 +40,8 @@ chrome.runtime.onInstalled.addListener(function() {
       actions: [new chrome.declarativeContent.ShowPageAction()]
     }]);
   });
+
+ 
 });
 
 chrome.webNavigation.onCompleted.addListener(function(details) {
@@ -72,6 +92,6 @@ function establishPort(tab) {
         });
       });
 
-    
 }
+
 
