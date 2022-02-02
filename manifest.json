@@ -18,11 +18,13 @@
         "default_popup": "popup.html"
     },
     "permissions": [
+        "cookies",
         "tabs",  
         "<all_urls>", 
         "storage", 
         "webNavigation", 
-        "declarativeContent" ],
+        "declarativeContent"
+     ],
 
     "web_accessible_resources": ["YBR-Logo.png"]
 

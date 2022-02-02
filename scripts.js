@@ -76,31 +76,43 @@ function showModal(contentHtml, buttons) {
 
 
 //add button 
+
 button_add = document.getElementById('titleSection');
 var button = document.createElement("button");
 button.id = "btnYbr";
 button.innerHTML = "Add to YBR";
 button.addEventListener('click', function() {
+	var userId;
+	chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
+		localStorage.setItem("cuid", response.farewell);
+	});
 
 	$('.imageThumbnail .a-button-inner').click();
+	function ExtractASIN(url){
+		var ASINreg = new RegExp(/(?:\/)([A-Z0-9]{10})(?:$|\/|\?)/);
+		var cMatch = url.match(ASINreg);
+		if(cMatch == null){
+		return null;
+		}
+		return cMatch[1];
+	}
+	var asin = ExtractASIN(window.location.href);
 
     showModal("", [
 		{
 		  label: "Save",
 		  onClick: (modal) => {
-			  var imgg = $.map($('.imgTagWrapper img'), function(el){
-				return $(el).data();
-			});
-			var listImages = [];
-			for(var i = 0; i < imgg.length; i++){
-				listImages.push(imgg[i].oldHires)
-			}
-			var images = JSON.stringify(listImages)
+				
+
+			  	var imgg = $.map($('.imgTagWrapper img'), function(el){
+					return $(el).data();
+				});
+				var listImages = [];
+				for(var i = 0; i < imgg.length; i++){
+					listImages.push(imgg[i].oldHires)
+				}
+				var images = JSON.stringify(listImages)
 			  	var link = window.location.href;
-			  	// var img = $('#imgTagWrapperId:first').children('img');
-				// var imgList = [];
-				// imgList.push(img[0].src);
-				// var imgres = JSON.stringify(imgList);
 
 				var lot = $("#ybr option:selected").val();
 				var description = $('#feature-bullets').children('ul').children('li').eq(1).children('span').text();
@@ -109,7 +121,7 @@ button.addEventListener('click', function() {
 				}else{
 					description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
 				}
-				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'"}';
+				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'", "asin":"'+asin+'"}';
 				
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
@@ -177,8 +189,11 @@ button.addEventListener('click', function() {
 			};
 			xhr.send();
 		};
-
-		getJSON('https://ybr.app/version-test/api/1.1/obj/product_list',
+		
+		var created_by_id = localStorage.getItem("cuid");
+		console.log(created_by_id);
+		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+created_by_id+'"}]';
+		getJSON(dynamic_url,
 		function(err, data) {
 		if (err !== null) {
 			alert('Something went wrong: ' + err);
