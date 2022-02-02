@@ -13,7 +13,6 @@ var name = children[0].getElementsByTagName('h2').item(0);
 console.log("name"+name);*/
 
 
-
 add_save_to_ybr_button();
 //product page
 function add_save_to_ybr_button(){
@@ -23,7 +22,7 @@ var productTitle = document.getElementById('productTitle');
 //get product price
 price_parent = document.getElementById('corePrice_desktop');
 var price = price_parent.querySelector('.a-offscreen');
-console.log("a-offscreen123"+price.innerHTML);
+// console.log("a-offscreen123"+price.innerHTML);
 
 
 
@@ -82,15 +81,26 @@ var button = document.createElement("button");
 button.id = "btnYbr";
 button.innerHTML = "Add to YBR";
 button.addEventListener('click', function() {
+
+	$('.imageThumbnail .a-button-inner').click();
+
     showModal("", [
 		{
 		  label: "Save",
 		  onClick: (modal) => {
+			  var imgg = $.map($('.imgTagWrapper img'), function(el){
+				return $(el).data();
+			});
+			var listImages = [];
+			for(var i = 0; i < imgg.length; i++){
+				listImages.push(imgg[i].oldHires)
+			}
+			var images = JSON.stringify(listImages)
 			  	var link = window.location.href;
-			  	var img = $('#imgTagWrapperId').children('img');
-				var imgList = [];
-				imgList.push(img[0].src);
-				var imgres = JSON.stringify(imgList);
+			  	// var img = $('#imgTagWrapperId:first').children('img');
+				// var imgList = [];
+				// imgList.push(img[0].src);
+				// var imgres = JSON.stringify(imgList);
 
 				var lot = $("#ybr option:selected").val();
 				var description = $('#feature-bullets').children('ul').children('li').eq(1).children('span').text();
@@ -99,9 +109,8 @@ button.addEventListener('click', function() {
 				}else{
 					description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
 				}
-				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "Images_text":'+imgres+', "Images":'+imgres+', "description":"'+description+'", "Listing URL":"'+link+'"}';
+				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'"}';
 				
-
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
 				  "method": "POST",
@@ -110,11 +119,8 @@ button.addEventListener('click', function() {
 					"Content-Type": "text/plain"
 				  },
 				  "data": data,
-				  success:function(){
+				  success:function(res){
 					  console.log(description);
-				  },
-				  error:function(err){
-					  alert("Something went wrong.");
 				  }
 				};
 			
@@ -148,6 +154,7 @@ button.addEventListener('click', function() {
 				}).then((responseJson) => {
 					alert('Successfully saved.');
 				}).catch((err) =>{
+					console.log(err);
 					alert('Something went wrong');
 				});
 		  },
