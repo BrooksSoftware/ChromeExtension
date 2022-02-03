@@ -349,15 +349,195 @@ $("div.s-result-item").each(function() {
 });*/
 
 
+//Show Modal
+function showModal2(contentHtml, buttons) {
+	const modal = document.createElement("div");
+  
+	modal.classList.add("modal");
+	modal.innerHTML = `
+		  <div class="modal__inner">
+			  <div class="modal__top">
+				  <div class="modal__title">Upload Bulk Product</div>
+				  <button class="modal__close" type="button">
+					  <span class="material-icons">X</span>
+				  </button>
+			  </div>
+			  <div class="modal__content">
+			  <select name="ybr2" id="ybr2" style="width: 230px;">
+			  $('#ybr2').append("<option value='ybr2'>Choose a List</option>");
+			</select>
+			  </div>
+			  <div id="btnSave" class="modal__bottom"></div>
+		  </div>
+	  `;
+
+
+  
+	for (const button of buttons) {
+	  const element = document.createElement("button");
+  
+	  element.setAttribute("type", "button");
+	  element.classList.add("modal__button");
+	  element.textContent = button.label;
+	  element.addEventListener("click", () => {
+		if (button.triggerClose) {
+		  document.body.removeChild(modal);
+		}
+  
+		button.onClick(modal);
+	  });
+  
+	  modal.querySelector(".modal__bottom").appendChild(element);
+	}
+  
+	modal.querySelector(".modal__close").addEventListener("click", () => {
+	  document.body.removeChild(modal);
+	});
+  
+	document.body.appendChild(modal);
+  }
+
+
+
 //upload product floating btn
 var uploadFloatingBtn = document.createElement( 'button' );
 
 document.body.appendChild( uploadFloatingBtn );
 
 uploadFloatingBtn.id = 'uploadFloatingBtn';
-uploadFloatingBtn.innerHTML = "Upload Products";
+uploadFloatingBtn.innerHTML = "Upload "+uniqueUrl.length+" Products";
 
-function UploadBulk(){
+uploadFloatingBtn.addEventListener('click', function() {
+
+	$('.imageThumbnail .a-button-inner').click();
+
+    showModal2("", [
+		{
+		  label: "Upload",
+		  onClick: (modal2) => {
+			  var imgg = $.map($('.imgTagWrapper img'), function(el){
+				return $(el).data();
+			});
+			var listImages = [];
+			for(var i = 0; i < imgg.length; i++){
+				listImages.push(imgg[i].oldHires)
+			}
+			var images = JSON.stringify(listImages)
+			  	var link = window.location.href;
+			  	// var img = $('#imgTagWrapperId:first').children('img');
+				// var imgList = [];
+				// imgList.push(img[0].src);
+				// var imgres = JSON.stringify(imgList);
+
+				var lot = $("#ybr2 option:selected").val();
+				var description = $('#feature-bullets').children('ul').children('li').eq(1).children('span').text();
+				if($('#feature-bullets').children('ul').children('li').attr('id') === 'replacementPartsFitmentBullet'){
+					description = $('#feature-bullets').children('ul').children('li').eq(1).children('span').text();
+				}else{
+					description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
+				}
+				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'"}';
+				
+				var settings = {
+				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
+				  "method": "POST",
+				  "timeout": 0,
+				  "headers": {
+					"Content-Type": "text/plain"
+				  },
+				  "data": data,
+				  success:function(res){
+					  console.log(description);
+				  }
+				};
+			
+				$.ajax(settings).done(function (response) {
+					let list = $("#ybr2 option:selected").val();
+					let res = JSON.parse(response)
+					let selected = $("#ybr2 option:selected").attr("prod");
+					let prod = selected.concat(',', res.id);
+					let prodList = [];
+
+					if(selected === 'undefined'){
+					prodList.push(res.id)
+					}
+					else{ prodList = prod.split(',') }
+					console.log(res.id);
+					fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
+					method: "PATCH",
+					body: JSON.stringify({
+						Products: prodList
+					}),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8"
+					}
+					}).then((response) =>{
+						alert('Successfully added to list');
+						$('.modal__close').click();
+					}).catch((err) => {
+						alert('Failed adding to list');
+					});
+					
+				}).then((responseJson) => {
+					alert('Successfully saved.');
+				}).catch((err) =>{
+					console.log(err);
+					alert('Something went wrong');
+				});
+		  },
+		  
+		  triggerClose: false
+		}
+	  ]);
+
+	  var getJSON = function(url, callback) {
+			var xhr = new XMLHttpRequest();
+			xhr.open('GET', url, true);
+			xhr.responseType = 'json';
+			xhr.onload = function() {
+			var status = xhr.status;
+			if (status === 200) {
+				callback(null, xhr.response);
+			} else {
+				callback(status, xhr.response);
+			}
+			};
+			xhr.send();
+		};
+
+		getJSON('https://ybr.app/version-test/api/1.1/obj/product_list',
+		function(err, data) {
+		if (err !== null) {
+			alert('Something went wrong: ' + err);
+		} else {
+			let res = data.response.results;
+			for(var i = 0; i < res.length; i++){
+				var option = document.createElement("option");
+				option.text = res[i]["List Name"];
+				option.value = res[i]["_id"];
+				option.setAttribute("prod", res[i]["Products"]);
+				document.getElementById('ybr2').appendChild(option);
+			}
+		}
+		});
+	
+	/*var settings = {
+	   "url": "https://mvptestjrb.bubbleapps.io/version-test/api/1.1/obj/YBR/bulk",
+	   "method": "POST",
+	   "timeout": 0,
+	   "headers": {
+	 	"content-type": "text/plain"
+	   },
+	   "data": '{"title":"'+productTitle.innerHTML+'","price":"'+price.innerHTML+'"}',
+	 };
+
+	 $.ajax(settings).done(function (response) {
+	 	alert();
+	   console.log("responsejrb"+response);
+	 });*/
+	});
+
+/*function UploadBulk(){
 	
 	$('body').on('click', '#uploadFloatingBtn', function(e){
         e.preventDefault();
@@ -417,10 +597,11 @@ function UploadBulk(){
         return false;
 })
 }
+*/
 
-uploadFloatingBtn.addEventListener('click', function() {
-	UploadBulk();
-}, false);
+// uploadFloatingBtn.addEventListener('click', function() {
+// 	UploadBulk();
+// }, false);
 
 
 
