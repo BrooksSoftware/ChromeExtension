@@ -78,7 +78,6 @@ if($('#feature-bullets').children('ul').children('li').attr('id') === 'replaceme
 	description = $('#feature-bullets').children('ul').children('li').children('span').first().text();
 }
 
-
 add_save_to_ybr_button();
 //product page
 function add_save_to_ybr_button(){
@@ -136,8 +135,7 @@ function showModal(contentHtml, buttons) {
 	});
   
 	document.body.appendChild(modal);
-  }
-
+}
 
 //add button 
 
