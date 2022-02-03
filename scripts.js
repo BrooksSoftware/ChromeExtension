@@ -87,6 +87,7 @@ var productTitle = document.getElementById('productTitle');
 //get product price
 price_parent = document.getElementById('corePrice_desktop');
 var price = price_parent.querySelector('.a-offscreen');
+var savePrice = price == null ? 0.00 : price.innerHTML.replace('$','');
 // console.log("a-offscreen123"+price.innerHTML);
 
 //Show Modal
@@ -150,7 +151,7 @@ addToYbrBtn.addEventListener('click', function() {
 		{
 		  label: "Save",
 		  onClick: (modal) => {
-				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+price.innerHTML.replace('$','')+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'", "asin":"'+asin+'", "cuid":"'+created_by+'"}';
+				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+savePrice+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'", "asin":"'+asin+'", "cuid":"'+created_by+'"}';
 				
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
@@ -263,7 +264,6 @@ getJSON(getProduct,
 				button_add.appendChild(addToYbrBtn)
 			}
 		}
-		console.log(prodAsin)
     }
 );
 
@@ -277,9 +277,8 @@ deleteFromYbrBtn.addEventListener('click', function() {
 		},
 	}
 
-	fetch("https://ybr.app/version-test/api/1.1/obj/products_uniques/"+prodUqId+"", deleteMethod) 
-	.then(response => response.json())
-	.then(data => console.log(data)) // Manipulate the data retrieved back, if we want to do something with it
+	fetch("https://ybr.app/version-test/api/1.1/obj/products_uniques/"+prodUqId+"", deleteMethod)
+	.then(data => console.log(data))
 	.catch(err => console.log(err))
 	
 	button_add.removeChild(deleteFromYbrBtn);
