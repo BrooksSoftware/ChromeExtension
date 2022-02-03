@@ -82,9 +82,9 @@ var button = document.createElement("button");
 button.id = "btnYbr";
 button.innerHTML = "Add to YBR";
 button.addEventListener('click', function() {
-	var userId;
-	chrome.runtime.sendMessage({greeting: "hello"}, function(response) {
-		localStorage.setItem("cuid", response.farewell);
+	//get current user id
+	chrome.runtime.sendMessage({getUser: "cuid"}, function(response) {
+		localStorage.setItem("cuid", response.currentUser);
 	});
 
 	$('.imageThumbnail .a-button-inner').click();
@@ -190,9 +190,9 @@ button.addEventListener('click', function() {
 			xhr.send();
 		};
 		
-		var created_by_id = localStorage.getItem("cuid");
-		console.log(created_by_id);
-		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+created_by_id+'"}]';
+		var created_by = localStorage.getItem("cuid");
+		console.log(created_by);
+		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+created_by+'"}]';
 		getJSON(dynamic_url,
 		function(err, data) {
 		if (err !== null) {

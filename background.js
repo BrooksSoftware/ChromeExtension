@@ -1,20 +1,19 @@
 'use strict';
 
-
-
+//Get current user from ybr
 chrome.cookies.get({ url: 'https://ybr.app/version-test/ce_login', name: 'ybr-gig_u1_testmain'},
   function(cookie){
     if(cookie){
       chrome.runtime.onMessage.addListener(
         function(request, sender, sendResponse) {
-          console.log(sender.tab ?
-                      "from a content script:" + sender.tab.url :
-                      "from the extension");
-          if (request.greeting === "hello")
-            sendResponse({farewell: cookie.value});
+          console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
+          if (request.getUser === "cuid")
+            sendResponse({currentUser: cookie.value});
         }
       );
-    }else{ alert('cant load cookie') }
+    } else { 
+      console.log('No current user') 
+    }
   }
 );
 
