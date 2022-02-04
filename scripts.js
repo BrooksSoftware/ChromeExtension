@@ -57,14 +57,14 @@ function ExtractASIN(url){
 }
 var asin = ExtractASIN(window.location.href);
 
-var imgg = $.map($('.imgTagWrapper img'), function(el){
-	return $(el).data();
-});
-var listImages = [];
-for(var i = 0; i < imgg.length; i++){
-	listImages.push(imgg[i].oldHires)
-}
-var images = JSON.stringify(listImages)
+// var imgg = $.map($('.imgTagWrapper img'), function(el){
+// 	return $(el).data();
+// });
+// var listImages = [];
+// for(var i = 0; i < imgg.length; i++){
+// 	listImages.push(imgg[i].oldHires)
+// }
+// var images = JSON.stringify(listImages)
   var link = window.location.href;
 
 var lot = $("#ybr option:selected").val();
@@ -144,8 +144,9 @@ addToYbrBtn.addEventListener('click', function() {
 		// sessionStorage.setItem("cuid", messageResponse.currentUser);
 		cuid = messageResponse.currentUser;
 		console.log(messageResponse.currentUser);
+	});
 		// console.log(created_by);
-		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+messageResponse.currentUser+'"}]';
+		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+cuid+'"}]';
 		getJSON(dynamic_url,
 		function(err, data) {
 		if (err !== null) {
@@ -169,8 +170,17 @@ addToYbrBtn.addEventListener('click', function() {
 		{
 		  label: "Save",
 		  onClick: (modal) => {
-				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+savePrice+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'", "asin":"'+asin+'", "cuid":"'+messageResponse.currentUser+'"}';
-				
+				// var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+savePrice+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'", "asin":"'+asin+'", "cuid":"'+cuid+'"}';
+				var imgg = $.map($('.imgTagWrapper img'), function(el){
+					return $(el).data();
+				});
+				var listImages = [];
+				for(var i = 0; i < imgg.length; i++){
+					listImages.push(imgg[i].oldHires)
+				}
+				var images = JSON.stringify(listImages)
+				var link = window.location.href;
+
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
 				  "method": "POST",
@@ -178,9 +188,17 @@ addToYbrBtn.addEventListener('click', function() {
 				  "headers": {
 					"Content-Type": "text/plain"
 				  },
-				  "data": data,
+				  "data": JSON.stringify({
+					  Title: productTitle.innerHTML,
+					  COGS: savePrice,
+					  Images: images,
+					  description: description,
+					  "Listing URL":link,
+					  asin: asin,
+					  cuid: cuid 
+				  }),
 				  success:function(res){
-					  console.log(description);
+					//   console.log(res);
 				  }
 				};
 			
@@ -225,7 +243,7 @@ addToYbrBtn.addEventListener('click', function() {
 		  triggerClose: false
 		}
 	  ]);
-	});
+	
 	console.log(cuid);
 	
 	// var settings = {
@@ -248,13 +266,15 @@ var deleteFromYbrBtn = document.createElement("button");
 deleteFromYbrBtn.id = "deleteFloatingBtn";
 deleteFromYbrBtn.innerHTML = "Delete Product";
 
+console.log(cuid + asin);
+
 var getProduct = 'https://ybr.app/version-test/api/1.1/obj/products_uniques?constraints=[{"key":"asin","constraint_type":"equals","value":"'+asin+'"}, {"key":"cuid","constraint_type":"equals","value":"'+cuid+'"}]';
 getJSON(getProduct,
     function(err, data) {
 		if (err !== null) {
 			alert('Something went wrong: ' + err);
 		} else {
-			if ( data.response ) {
+			if ( data.response.count != 0 ) {
 				button_add.appendChild(deleteFromYbrBtn)
 			} else {
 				button_add.appendChild(addToYbrBtn)
