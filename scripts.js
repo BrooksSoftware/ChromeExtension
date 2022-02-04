@@ -140,12 +140,12 @@ var addToYbrBtn = document.createElement("button");
 addToYbrBtn.id = "btnYbr";
 addToYbrBtn.innerHTML = "Add to YBR";
 addToYbrBtn.addEventListener('click', function() {
-	chrome.runtime.sendMessage({getUser: "cuid"}, function(response) {
-		// sessionStorage.setItem("cuid", response.currentUser);
-		cuid = response.currentUser;
-		console.log(response.currentUser);
+	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+		// sessionStorage.setItem("cuid", messageResponse.currentUser);
+		cuid = messageResponse.currentUser;
+		console.log(messageResponse.currentUser);
 		// console.log(created_by);
-		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+response.currentUser+'"}]';
+		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+messageResponse.currentUser+'"}]';
 		getJSON(dynamic_url,
 		function(err, data) {
 		if (err !== null) {
@@ -161,15 +161,15 @@ addToYbrBtn.addEventListener('click', function() {
 			}
 		}
 		});
-	});
-	console.log(cuid);
+
+		
 	$('.imageThumbnail .a-button-inner').click();
 
     showModal("", [
 		{
 		  label: "Save",
 		  onClick: (modal) => {
-				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+savePrice+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'", "asin":"'+asin+'", "cuid":"'+cuid+'"}';
+				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+savePrice+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'", "asin":"'+asin+'", "cuid":"'+messageResponse.currentUser+'"}';
 				
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
@@ -225,6 +225,8 @@ addToYbrBtn.addEventListener('click', function() {
 		  triggerClose: false
 		}
 	  ]);
+	});
+	console.log(cuid);
 	
 	// var settings = {
 	//   "url": "https://mvptestjrb.bubbleapps.io/version-test/api/1.1/obj/YBR/bulk",
@@ -252,13 +254,7 @@ getJSON(getProduct,
 		if (err !== null) {
 			alert('Something went wrong: ' + err);
 		} else {
-			let res = data.response.results;
-			for(var i = 0; i < res.length; i++){
-				prodAsin = res[i]["asin"];
-				prodUqId = res[i]["_id"];
-			}
-			
-			if ( prodAsin === asin ) {
+			if ( data.response ) {
 				button_add.appendChild(deleteFromYbrBtn)
 			} else {
 				button_add.appendChild(addToYbrBtn)
