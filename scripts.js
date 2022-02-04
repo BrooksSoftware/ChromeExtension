@@ -28,10 +28,7 @@ var getJSON = function(url, callback) {
 };
 
 //get current user id
-chrome.runtime.sendMessage({getUser: "cuid"}, function(response) {
-	localStorage.setItem("cuid", response.currentUser);
-});
-var created_by = localStorage.getItem("cuid");
+var cuid;
 
 //get webpage products
 var products = [];
@@ -138,20 +135,23 @@ function showModal(contentHtml, buttons) {
 	document.body.appendChild(modal);
 }
 
-//add button 
-
 button_add = document.getElementById('titleSection');
 var addToYbrBtn = document.createElement("button");
 addToYbrBtn.id = "btnYbr";
 addToYbrBtn.innerHTML = "Add to YBR";
 addToYbrBtn.addEventListener('click', function() {
+	chrome.runtime.sendMessage({getUser: "cuid"}, function(response) {
+		// sessionStorage.setItem("cuid", response.currentUser);
+		cuid = response.currentUser;
+		console.log(response.currentUser);
+	});
 	$('.imageThumbnail .a-button-inner').click();
 
     showModal("", [
 		{
 		  label: "Save",
 		  onClick: (modal) => {
-				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+savePrice+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'", "asin":"'+asin+'", "cuid":"'+created_by+'"}';
+				var data = '{"Title":"'+productTitle.innerHTML+'", "COGS":"'+savePrice+'", "Images":'+images+', "description":"'+description+'", "Listing URL":"'+link+'", "asin":"'+asin+'", "cuid":"'+cuid+'"}';
 				
 				var settings = {
 				  "url": "https://ybr.app/version-test/api/1.1/obj/products_uniques/bulk",
@@ -208,8 +208,8 @@ addToYbrBtn.addEventListener('click', function() {
 		}
 	  ]);
 		
-		console.log(created_by);
-		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+created_by+'"}]';
+		// console.log(created_by);
+		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+cuid+'"}]';
 		getJSON(dynamic_url,
 		function(err, data) {
 		if (err !== null) {
@@ -246,7 +246,7 @@ var deleteFromYbrBtn = document.createElement("button");
 deleteFromYbrBtn.id = "deleteFloatingBtn";
 deleteFromYbrBtn.innerHTML = "Delete Product";
 
-var getProduct = 'https://ybr.app/version-test/api/1.1/obj/products_uniques?constraints=[{"key":"asin","constraint_type":"equals","value":"'+asin+'"}, {"key":"cuid","constraint_type":"equals","value":"'+created_by+'"}]';
+var getProduct = 'https://ybr.app/version-test/api/1.1/obj/products_uniques?constraints=[{"key":"asin","constraint_type":"equals","value":"'+asin+'"}, {"key":"cuid","constraint_type":"equals","value":"'+cuid+'"}]';
 getJSON(getProduct,
     function(err, data) {
 		if (err !== null) {

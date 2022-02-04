@@ -1,18 +1,23 @@
 'use strict';
 
 //Get current user from ybr
-chrome.cookies.get({ url: 'https://ybr.app/version-test/ce_login', name: 'ybr-gig_u1_testmain'},
-  function(cookie){
-    if(cookie){
-      chrome.runtime.onMessage.addListener(
-        function(request, sender, sendResponse) {
-          console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
-          if (request.getUser === "cuid")
-            sendResponse({currentUser: cookie.value});
+let cuid;
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
+    chrome.cookies.get({ url: 'https://ybr.app/version-test/', name: 'ybr-gig_u1_testmain'},
+      function(cookie){
+        if(cookie){
+          console.log(cookie.value);
+          cuid = cookie.value;
+        } else {
+          console.log('No current user');
         }
-      );
-    } else { 
-      console.log('No current user') 
+      }
+    );
+    //send Response
+    if (request.getUser === "cuid") {
+      sendResponse({currentUser: cuid});
     }
   }
 );
@@ -46,7 +51,7 @@ chrome.runtime.onInstalled.addListener(function() {
 chrome.webNavigation.onCompleted.addListener(function(details) {
   console.log(details);
   // chrome.tabs.insertCSS(null, {file: './mystyles.css'});
-  chrome.tabs.executeScript(null, {file: './scripts.js'});
+  chrome.tabs.executeScript(null, {file: 'scripts.js'});
 }, {
   url: [{
       hostContains: 'www.amazon.com'
