@@ -144,7 +144,25 @@ addToYbrBtn.addEventListener('click', function() {
 		// sessionStorage.setItem("cuid", response.currentUser);
 		cuid = response.currentUser;
 		console.log(response.currentUser);
+		// console.log(created_by);
+		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+response.currentUser+'"}]';
+		getJSON(dynamic_url,
+		function(err, data) {
+		if (err !== null) {
+			alert('Something went wrong: ' + err);
+		} else {
+			let res = data.response.results;
+			for(var i = 0; i < res.length; i++){
+				var option = document.createElement("option");
+				option.text = res[i]["List Name"];
+				option.value = res[i]["_id"];
+				option.setAttribute("prod", res[i]["Products"]);
+				document.getElementById('ybr').appendChild(option);
+			}
+		}
+		});
 	});
+	console.log(cuid);
 	$('.imageThumbnail .a-button-inner').click();
 
     showModal("", [
@@ -207,24 +225,6 @@ addToYbrBtn.addEventListener('click', function() {
 		  triggerClose: false
 		}
 	  ]);
-		
-		// console.log(created_by);
-		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+cuid+'"}]';
-		getJSON(dynamic_url,
-		function(err, data) {
-		if (err !== null) {
-			alert('Something went wrong: ' + err);
-		} else {
-			let res = data.response.results;
-			for(var i = 0; i < res.length; i++){
-				var option = document.createElement("option");
-				option.text = res[i]["List Name"];
-				option.value = res[i]["_id"];
-				option.setAttribute("prod", res[i]["Products"]);
-				document.getElementById('ybr').appendChild(option);
-			}
-		}
-		});
 	
 	// var settings = {
 	//   "url": "https://mvptestjrb.bubbleapps.io/version-test/api/1.1/obj/YBR/bulk",
