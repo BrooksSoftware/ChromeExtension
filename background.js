@@ -67,6 +67,15 @@ chrome.webNavigation.onCompleted.addListener(function(details) {
   }],
 });
 
+chrome.webNavigation.onCompleted.addListener(function(details) {
+  // chrome.tabs.insertCSS(null, {file: './mystyles.css'});
+  chrome.tabs.executeScript(null, {file: './liquidation.js'});
+}, {
+  url: [{
+      hostContains: 'www.liquidation.com'
+  }],
+});
+
 
 // Listener for the extension icon click
 chrome.browserAction.onClicked.addListener(establishPort);
