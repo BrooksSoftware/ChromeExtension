@@ -8,7 +8,6 @@ chrome.runtime.onMessage.addListener(
     chrome.cookies.get({ url: 'https://ybr.app/version-test/', name: 'ybr-gig_u1_testmain'},
       function(cookie){
         if(cookie){
-          console.log(cookie.value);
           cuid = cookie.value;
         } else {
           console.log('No current user');
@@ -18,6 +17,7 @@ chrome.runtime.onMessage.addListener(
     //send Response
     if (request.getUser === "cuid") {
       sendResponse({currentUser: cuid});
+      // alert(cuid);
     }
   }
 );
