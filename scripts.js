@@ -85,6 +85,7 @@ var productTitle = document.getElementById('productTitle');
 price_parent = document.getElementById('corePrice_desktop');
 var price = price_parent.querySelector('.a-offscreen');
 var savePrice = price == null ? 0.00 : price.innerHTML.replace('$','');
+var cPPrice = parseFloat(savePrice.replace(/,/g,''));
 // console.log("a-offscreen123"+price.innerHTML);
 
 //Show Modal
@@ -191,12 +192,13 @@ addToYbrBtn.addEventListener('click', function() {
 							},
 							"data": JSON.stringify({
 								Title: productTitle.innerHTML,
-								COGS: savePrice,
+								COGS: cPPrice,
 								Images: images,
 								description: description,
 								"Listing URL":link,
 								asin: asin,
-								cuid: messageResponse.currentUser 
+								cuid: messageResponse.currentUser,
+								"List Name": $("#ybr option:selected").val() 
 							}),
 							success:function(res){
 								//   console.log(res);
@@ -290,12 +292,13 @@ addToYbrBtn.addEventListener('click', function() {
 						},
 						"data": JSON.stringify({
 							Title: productTitle.innerHTML,
-							COGS: savePrice,
+							COGS: cPPrice,
 							Images: images,
 							description: description,
 							"Listing URL":link,
 							asin: asin,
-							cuid: messageResponse.currentUser 
+							cuid: messageResponse.currentUser,
+							"List Name": $("#ybr option:selected").val() 
 						}),
 						success:function(res){
 							//   console.log(res);
@@ -452,6 +455,7 @@ uploadFloatingBtn.id = 'uploadFloatingBtn';
 uploadFloatingBtn.innerHTML = "Upload "+uniqueUrl.length+" Products";
 
 uploadFloatingBtn.addEventListener('click', function() {
+
     chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
 		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+messageResponse.currentUser+'"}]';
         getJSON(dynamic_url,
@@ -471,10 +475,11 @@ uploadFloatingBtn.addEventListener('click', function() {
         });
 
 		$('.imageThumbnail .a-button-inner').click();
+
 		showModal2("", [
 			{
 			label: "Upload",
-			onClick: (modal) => {
+			onClick: (modal2) => {
 				var imgg = $.map($('.imgTagWrapper img'), function(el){
 					return $(el).data();
 				});
@@ -494,7 +499,6 @@ uploadFloatingBtn.addEventListener('click', function() {
 				},
 				"data": JSON.stringify({
 					Title: productTitle.innerHTML,
-					COGS: savePrice,
 					Images: images,
 					description: description,
 					"Listing URL":link,
