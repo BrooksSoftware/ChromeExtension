@@ -356,7 +356,7 @@ var deleteFromYbrBtn = document.createElement("button");
 deleteFromYbrBtn.id = "deleteFloatingBtn";
 deleteFromYbrBtn.innerHTML = "Delete Product";
 console.log(prodUqId +" "+ cuid)
-var getProduct = 'https://ybr.app/version-test/api/1.1/obj/products_uniques?constraints=[{"key":"_id","constraint_type":"equals","value":"'+prodUqId+'"}, {"key":"cuid","constraint_type":"equals","value":"'+cuid+'"}]';
+var getProduct = 'https://ybr.app/version-test/api/1.1/obj/products_uniques?constraints=[{"key":"asin","constraint_type":"equals","value":"'+asin+'"}, {"key":"cuid","constraint_type":"equals","value":"'+cuid+'"}]';
 getJSON(getProduct,
     function(err, data) {
 		if (err !== null) {
