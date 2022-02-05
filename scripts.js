@@ -147,6 +147,7 @@ addToYbrBtn.addEventListener('click', function() {
 		if ( messageResponse.currentUser === undefined ) {
 			chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
 				// request again;
+				sessionStorage.setItem("cuid", messageResponse.currentUser);
 				var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+messageResponse.currentUser+'"}]';
 				getJSON(dynamic_url,
 				function(err, data) {
@@ -351,14 +352,14 @@ addToYbrBtn.addEventListener('click', function() {
 var deleteFromYbrBtn = document.createElement("button");
 deleteFromYbrBtn.id = "deleteFloatingBtn";
 deleteFromYbrBtn.innerHTML = "Delete Product";
-
+console.log(prodUqId +" "+ cuid)
 var getProduct = 'https://ybr.app/version-test/api/1.1/obj/products_uniques?constraints=[{"key":"_id","constraint_type":"equals","value":"'+prodUqId+'"}, {"key":"cuid","constraint_type":"equals","value":"'+cuid+'"}]';
 getJSON(getProduct,
     function(err, data) {
 		if (err !== null) {
 			alert('Something went wrong: ' + err);
 		} else {
-			if ( data.response.count == 1 ) {
+			if ( data.response ) {
 				button_add.appendChild(deleteFromYbrBtn)
 			} else {
 				button_add.appendChild(addToYbrBtn)
