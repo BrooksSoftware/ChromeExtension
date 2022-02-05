@@ -375,7 +375,15 @@ getJSON(getProduct,
 );
 
 deleteFromYbrBtn.addEventListener('click', function() {
-	pid = prodUqId === null ? prodPageId : prodUqId;
+	//empty produqid
+	// pid = prodUqId === null ? prodPageId : prodUqId;
+	pid = prodUqId;
+	if ( pid ) {
+		var newPId = prodPageId;
+		if (newPId != pid) {
+			pid = newPId;
+		}
+	}
 	console.log(pid);
 	// alert(prodPageId)
 
