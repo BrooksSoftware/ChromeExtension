@@ -359,7 +359,7 @@ getJSON(getProduct,
 		if (err !== null) {
 			alert('Something went wrong: ' + err);
 		} else {
-			if ( data.response ) {
+			if ( data.response.count > 0 ) {
 				button_add.appendChild(deleteFromYbrBtn)
 			} else {
 				button_add.appendChild(addToYbrBtn)
