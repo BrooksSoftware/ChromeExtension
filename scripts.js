@@ -34,6 +34,7 @@ var cuid = sessionStorage.getItem("cuid");
 var products = [];
 var prodAsin;//current page product asin
 var prodUqId = sessionStorage.getItem("prodUqId");//current page product ID
+var prodPageId;
 
 var productUrls = document.querySelectorAll('.a-link-normal');
 for (var i=0; i<productUrls.length; i++){
@@ -218,6 +219,7 @@ addToYbrBtn.addEventListener('click', function() {
 								else{ prodList = prod.split(',') }
 								console.log(res.id);
 								sessionStorage.setItem("prodUqId", res.id);
+								prodPageId = res.id;
 								fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
 								method: "PATCH",
 								body: JSON.stringify({
@@ -318,6 +320,7 @@ addToYbrBtn.addEventListener('click', function() {
 							else{ prodList = prod.split(',') }
 							console.log(res.id);
 							sessionStorage.setItem("prodUqId", res.id);
+							prodPageId = res.id;
 							fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
 							method: "PATCH",
 							body: JSON.stringify({
@@ -373,21 +376,39 @@ getJSON(getProduct,
 
 deleteFromYbrBtn.addEventListener('click', function() {
 	console.log(prodUqId);
-
-	const deleteMethod = {
-		method: 'DELETE',
-		headers: {
-		 'Content-type': 'application/json; charset=UTF-8'
-		},
+	if ( prodUqId === null ) {
+		const deleteMethod = {
+			method: 'DELETE',
+			headers: {
+			 'Content-type': 'application/json; charset=UTF-8'
+			},
+		}
+	
+		fetch("https://ybr.app/version-test/api/1.1/obj/products_uniques/"+prodPageId+"", deleteMethod)
+		.then(data => console.log(data))
+		.catch(err => console.log(err))
+		
+		button_add.removeChild(deleteFromYbrBtn);
+		alert("Successfully removed from list")
+		button_add.appendChild(addToYbrBtn);
+	} else {
+		const deleteMethod = {
+			method: 'DELETE',
+			headers: {
+			 'Content-type': 'application/json; charset=UTF-8'
+			},
+		}
+	
+		fetch("https://ybr.app/version-test/api/1.1/obj/products_uniques/"+prodUqId+"", deleteMethod)
+		.then(data => console.log(data))
+		.catch(err => console.log(err))
+		
+		button_add.removeChild(deleteFromYbrBtn);
+		alert("Successfully removed from list")
+		button_add.appendChild(addToYbrBtn);
 	}
 
-	fetch("https://ybr.app/version-test/api/1.1/obj/products_uniques/"+prodUqId+"", deleteMethod)
-	.then(data => console.log(data))
-	.catch(err => console.log(err))
 	
-	button_add.removeChild(deleteFromYbrBtn);
-	alert("Successfully removed from list")
-	button_add.appendChild(addToYbrBtn);
 
 }, false);
 
