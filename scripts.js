@@ -196,7 +196,7 @@ addToYbrBtn.addEventListener('click', function() {
 								description: description,
 								"Listing URL":link,
 								asin: asin,
-								cuid: cuid 
+								cuid: messageResponse.currentUser 
 							}),
 							success:function(res){
 								//   console.log(res);
