@@ -84,9 +84,11 @@ var productTitle = document.getElementById('productTitle');
 // console.log("title"+productTitle.innerHTML);
 //get product price
 price_parent = document.getElementById('corePrice_desktop');
-var price = price_parent.querySelector('.a-offscreen');
-var savePrice = price == null ? "0.00" : price.innerHTML.replace('$','');
-var cPPrice = parseFloat(savePrice.replace(/,/g,''));
+var price = price_parent ? price_parent.querySelector('.a-offscreen') : '';
+if ( price ) {
+	var savePrice = price == null ? "0.00" : price.innerHTML.replace('$','');
+	var cPPrice = parseFloat(savePrice.replace(/,/g,''));
+}
 // console.log("a-offscreen123"+price.innerHTML);
 
 //Show Modal
@@ -142,12 +144,12 @@ var addToYbrBtn = document.createElement("button");
 addToYbrBtn.id = "btnYbr";
 addToYbrBtn.innerHTML = "Add to YBR";
 addToYbrBtn.addEventListener('click', function() {
-	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+	chrome.runtime.sendMessage({getUser: "cuid", cuid: cuid}, function(messageResponse) {
 		localStorage.setItem("cuid", messageResponse.currentUser);
 		console.log(messageResponse.currentUser);
 
 		if ( messageResponse.currentUser === undefined ) {
-			chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+			chrome.runtime.sendMessage({getUser: "cuid", cuid: cuid}, function(messageResponse) {
 				// request again;
 				localStorage.setItem("cuid", messageResponse.currentUser);
 				var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+messageResponse.currentUser+'"}]';
@@ -477,7 +479,7 @@ uploadFloatingBtn.innerHTML = "Upload "+uniqueUrl.length+" Products";
 
 uploadFloatingBtn.addEventListener('click', function() {
 
-    chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+    chrome.runtime.sendMessage({getUser: "cuid", cuid: cuid}, function(messageResponse) {
 		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+messageResponse.currentUser+'"}]';
         getJSON(dynamic_url,
 			function(err, data) {

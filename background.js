@@ -1,14 +1,14 @@
 'use strict';
 
 //Get current user from ybr
-const cuid = localStorage.getItem("cuid");
+let cuid;
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
     chrome.cookies.get({ url: 'https://ybr.app/version-test/', name: 'ybr-gig_u1_testmain'},
       function(cookie){
         if(cookie){
-          localStorage.setItem("cuid", cookie.value);
+          cuid = cookie.value;
         } else {
           console.log('No current user');
         }
@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener(
     //send Response
     if (request.getUser === "cuid") {
       sendResponse({currentUser: cuid});
-      // alert(cuid);
+      //alert(cuid);
     }
   }
 );
