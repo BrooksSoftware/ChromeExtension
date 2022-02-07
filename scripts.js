@@ -85,7 +85,7 @@ var productTitle = document.getElementById('productTitle');
 //get product price
 price_parent = document.getElementById('corePrice_desktop');
 var price = price_parent.querySelector('.a-offscreen');
-var savePrice = price == null ? 0.00 : price.innerHTML.replace('$','');
+var savePrice = price == null ? "0.00" : price.innerHTML.replace('$','');
 var cPPrice = parseFloat(savePrice.replace(/,/g,''));
 // console.log("a-offscreen123"+price.innerHTML);
 
@@ -376,16 +376,19 @@ getJSON(getProduct,
 
 deleteFromYbrBtn.addEventListener('click', function() {
 	//empty produqid
-	// pid = prodUqId === null ? prodPageId : prodUqId;
-	pid = prodUqId;
-	if ( pid ) {
+	var pid = prodUqId;
+	if ( pid === null || pid === undefined ) {
+		var newPId = prodPageId;
+		if (newPId != pid) {
+			pid = newPId;
+		}
+	} else {
 		var newPId = prodPageId;
 		if (newPId != pid) {
 			pid = newPId;
 		}
 	}
 	console.log(pid);
-	// alert(prodPageId)
 
 	const deleteMethod = {
 		method: 'DELETE',
