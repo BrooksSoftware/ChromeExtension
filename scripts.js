@@ -366,6 +366,11 @@ getJSON(getProduct,
 			alert('Something went wrong: ' + err);
 		} else {
 			if ( data.response.count > 0 ) {
+				let res = data.response.results;
+				for(var i = 0; i < res.length; i++){
+					prodPageId = res[i]["_id"];
+				}
+				console.log(prodPageId)
 				button_add.appendChild(deleteFromYbrBtn)
 			} else {
 				button_add.appendChild(addToYbrBtn)
