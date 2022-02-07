@@ -1,59 +1,105 @@
-#btnYbr {
-  color: white;
-  background-color: green;
-  padding: 10px 20px;
-  border: 0px;
-  border-radius: 50px;
-  width: 200px;
-  height: max-content;
-  margin: 10px 10px 10px 0px;
-}
-
-#deleteFloatingBtn {
-  color: white;
-  background-color: red;
-  padding: 10px 20px;
-  border: 0px;
-  border-radius: 50px;
-  width: 200px;
-  height: max-content;
-  margin: 10px 10px 10px 0px;
-}
-
-#uploadFloatingBtn {
-  color: white;
-  background-color: blue;
-  padding: 10px 20px;
-  border: 0px;
-  border-radius: 50px;
-  width: 200px;
-  height: max-content;
+#floating_btns_container {
   position: fixed;
-  top: 75%;
+  height: auto;
+  width: auto;
+  padding: 20px;
   left: 82%;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease 0s;
-  cursor: pointer;
-  outline: none;
-  z-index: 1;
-}
-
-#exportFloatingBtn {
-  color: white;
-  background-color: green;
-  padding: 10px 20px;
-  border: 0px;
-  border-radius: 50px;
-  width: 200px;
-  height: max-content;
-  position: fixed;
   top: 82%;
-  left: 82%;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease 0s;
+}
+
+#btnYbr_success {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #00D775, #00BD68);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #FFFFFF;
   cursor: pointer;
-  outline: none;
-  z-index: 1;
+  display: inline-block;
+  font-family: Inter,-apple-system,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 200px;
+  border: 0;
+  margin: 10px 10px 10px 0px;
+}
+
+#btnYbr_success:hover {
+  background: #00bd68;
+}
+
+#btnYbr_danger {
+  background: #FF4742;
+  border: 1px solid #FF4742;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter,-apple-system,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  pointer-events: auto;
+  position: relative;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 200px;
+  margin: 10px 10px 10px 0px;
+}
+
+#btnYbr_danger:hover {
+  background-color: initial;
+  background-position: 0 0;
+  color: #FF4742;
+}
+
+#btnYbr_floating {
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #FF7E31, #E62C03);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Inter,-apple-system,system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  height: 40px;
+  line-height: 40px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 20px;
+  pointer-events: auto;
+  text-align: center;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 200px;
+  z-index: 9;
+  border: 0;
+  transition: box-shadow .2s;
+  margin-bottom: 10px;
+}
+
+#btnYbr_floating:hover {
+  background: #E62C03;
 }
 
 .modal {
