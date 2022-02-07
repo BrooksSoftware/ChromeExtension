@@ -28,12 +28,12 @@ var getJSON = function(url, callback) {
 };
 
 //get current user id
-var cuid = sessionStorage.getItem("cuid");
+var cuid = localStorage.getItem("cuid");
 
 //get webpage products
 var products = [];
 var prodAsin;//current page product asin
-var prodUqId = sessionStorage.getItem("prodUqId");//current page product ID
+var prodUqId = localStorage.getItem("prodUqId");//current page product ID
 var prodPageId;
 
 var productUrls = document.querySelectorAll('.a-link-normal');
@@ -143,13 +143,13 @@ addToYbrBtn.id = "btnYbr";
 addToYbrBtn.innerHTML = "Add to YBR";
 addToYbrBtn.addEventListener('click', function() {
 	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
-		sessionStorage.setItem("cuid", messageResponse.currentUser);
+		localStorage.setItem("cuid", messageResponse.currentUser);
 		console.log(messageResponse.currentUser);
 
 		if ( messageResponse.currentUser === undefined ) {
 			chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
 				// request again;
-				sessionStorage.setItem("cuid", messageResponse.currentUser);
+				localStorage.setItem("cuid", messageResponse.currentUser);
 				var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+messageResponse.currentUser+'"}]';
 				getJSON(dynamic_url,
 				function(err, data) {
@@ -218,7 +218,7 @@ addToYbrBtn.addEventListener('click', function() {
 								}
 								else{ prodList = prod.split(',') }
 								console.log(res.id);
-								sessionStorage.setItem("prodUqId", res.id);
+								localStorage.setItem("prodUqId", res.id);
 								prodPageId = res.id;
 								fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
 								method: "PATCH",
@@ -319,7 +319,7 @@ addToYbrBtn.addEventListener('click', function() {
 							}
 							else{ prodList = prod.split(',') }
 							console.log(res.id);
-							sessionStorage.setItem("prodUqId", res.id);
+							localStorage.setItem("prodUqId", res.id);
 							prodPageId = res.id;
 							fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
 							method: "PATCH",
