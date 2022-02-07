@@ -29,6 +29,11 @@ var getJSON = function(url, callback) {
 
 //get current user id
 var cuid = localStorage.getItem("cuid");
+if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+		cuid = localStorage.getItem("cuid");
+	});
+}
 
 //get webpage products
 var products = [];
@@ -139,17 +144,17 @@ function showModal(contentHtml, buttons) {
 	document.body.appendChild(modal);
 }
 
-button_add = document.getElementById('titleSection');
+button_add = document.getElementById('title_feature_div');
 var addToYbrBtn = document.createElement("button");
-addToYbrBtn.id = "btnYbr_success";
+addToYbrBtn.id = "btnYbr_yellow";
 addToYbrBtn.innerHTML = "Add to YBR";
 addToYbrBtn.addEventListener('click', function() {
-	chrome.runtime.sendMessage({getUser: "cuid", cuid: cuid}, function(messageResponse) {
+	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
 		localStorage.setItem("cuid", messageResponse.currentUser);
 		console.log(messageResponse.currentUser);
 
 		if ( messageResponse.currentUser === undefined ) {
-			chrome.runtime.sendMessage({getUser: "cuid", cuid: cuid}, function(messageResponse) {
+			chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
 				// request again;
 				localStorage.setItem("cuid", messageResponse.currentUser);
 				var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+messageResponse.currentUser+'"}]';
@@ -478,12 +483,12 @@ var uploadFloatingBtn = document.createElement( 'button' );
 
 floatingDiv.appendChild( uploadFloatingBtn );
 
-uploadFloatingBtn.id = 'btnYbr_floating';
+uploadFloatingBtn.id = 'btnYbr_blue';
 uploadFloatingBtn.innerHTML = "Upload "+uniqueUrl.length+" Products";
 
 uploadFloatingBtn.addEventListener('click', function() {
 
-    chrome.runtime.sendMessage({getUser: "cuid", cuid: cuid}, function(messageResponse) {
+    chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
 		var dynamic_url = 'https://ybr.app/version-test/api/1.1/obj/productlist?constraints=[{"key":"created by","constraint_type":"equals","value":"'+messageResponse.currentUser+'"}]';
         getJSON(dynamic_url,
 			function(err, data) {
@@ -651,7 +656,7 @@ var exportFloatingBtn = document.createElement( 'button' );
 
 floatingDiv.appendChild( exportFloatingBtn );
 
-exportFloatingBtn.id = 'btnYbr_floating';
+exportFloatingBtn.id = 'btnYbr_yellow';
 exportFloatingBtn.innerHTML = "Export "+uniqueUrl.length+" Products";
 
 function exportToExcel(){
