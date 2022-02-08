@@ -9,9 +9,9 @@
     },
     "content_scripts":[
         {
-            "css": ["mystyles.css"],
+            "css": ["mystyles.css", "fontawesome/css/fontawesome.min.css", "fontawesome/css/regular.min.css"],
             "matches": ["<all_urls>"],
-            "js": ["UI.js", "jquery.js", "liquidation.js"]
+            "js": ["UI.js", "jquery.js", "liquidation.js", "fontawesome/js/fontawesome.min.js", "fontawesome/js/regular.min.js"]
         }
     ],
     "page_action":{
