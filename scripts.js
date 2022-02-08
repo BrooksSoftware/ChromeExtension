@@ -436,7 +436,7 @@ uploadFloatingBtn.addEventListener('click', function() {
 			{
 			label: "Upload",
 			onClick: (modal2) => {
-				if($("#ybr option:selected").val() != "ybr") {
+				if($("#ybr option:selected").val() != undefined) {
 					var imgg = $.map($('.imgTagWrapper img'), function(el){
 						return $(el).data();
 					});
