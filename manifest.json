@@ -9,9 +9,9 @@
     },
     "content_scripts":[
         {
-            "css": ["mystyles.css", "fontawesome/css/fontawesome.min.css", "fontawesome/css/regular.min.css"],
+            "css": ["mystyles.css", "fontawesome/all.css"],
             "matches": ["<all_urls>"],
-            "js": ["UI.js", "jquery.js", "liquidation.js", "fontawesome/js/fontawesome.min.js", "fontawesome/js/regular.min.js"]
+            "js": ["UI.js", "jquery.js", "liquidation.js", "fontawesome/all.js"]
         }
     ],
     "page_action":{
@@ -26,7 +26,12 @@
         "declarativeContent"
      ],
 
-    "web_accessible_resources": ["YBR-Logo.png"]
+    "web_accessible_resources": [
+        "YBR-Logo.png",
+        "fontawesome/all.css",
+        "fontawesome/all.js",
+        "fontawesome/fa-regular-400.woff2"
+    ]
 
     
 }

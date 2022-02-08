@@ -250,7 +250,7 @@ function getList(currentUser) {
 button_add = document.getElementById('title_feature_div');
 var addToYbrBtn = document.createElement("button");
 addToYbrBtn.id = "btnYbr_yellow";
-addToYbrBtn.innerHTML = "<i class='fas fa-cart-plus'></i> Add to YBR";
+addToYbrBtn.innerHTML = "<i class='fas fa-plus'></i> Add to YBR";
 addToYbrBtn.addEventListener('click', function() {
 	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
 		localStorage.setItem("cuid", messageResponse.currentUser);
@@ -271,7 +271,7 @@ addToYbrBtn.addEventListener('click', function() {
 //delete from ybr
 var deleteFromYbrBtn = document.createElement("button");
 deleteFromYbrBtn.id = "btnYbr_danger";
-deleteFromYbrBtn.innerHTML = "Remove from YBR";
+deleteFromYbrBtn.innerHTML = "<i class='fas fa-trash-alt'></i> Remove from YBR";
 console.log(prodUqId +" "+ cuid)
 var getProduct = 'https://ybr.app/version-test/api/1.1/obj/products_uniques?constraints=[{"key":"asin","constraint_type":"equals","value":"'+asin+'"}, {"key":"cuid","constraint_type":"equals","value":"'+cuid+'"}]';
 getJSON(getProduct,
@@ -391,7 +391,7 @@ var uploadFloatingBtn = document.createElement( 'button' );
 floatingDiv.appendChild( uploadFloatingBtn );
 
 uploadFloatingBtn.id = 'btnYbr_blue';
-uploadFloatingBtn.innerHTML = "Upload "+uniqueUrl.length+" Products";
+uploadFloatingBtn.innerHTML = "<i class='fas fa-upload'></i> Upload "+uniqueUrl.length+" Products";
 
 uploadFloatingBtn.addEventListener('click', function() {
 
@@ -564,7 +564,7 @@ var exportFloatingBtn = document.createElement( 'button' );
 floatingDiv.appendChild( exportFloatingBtn );
 
 exportFloatingBtn.id = 'btnYbr_yellow';
-exportFloatingBtn.innerHTML = "Export "+uniqueUrl.length+" Products";
+exportFloatingBtn.innerHTML = "<i class='fas fa-download'></i> Export "+uniqueUrl.length+" Products";
 
 function exportToExcel(){
 	var htmls = "";
