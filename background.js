@@ -17,7 +17,6 @@ chrome.runtime.onMessage.addListener(
     //send Response
     if (request.getUser === "cuid") {
       sendResponse({currentUser: cuid});
-      //alert(cuid);
     }
   }
 );

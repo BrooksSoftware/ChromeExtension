@@ -31,7 +31,17 @@ var getJSON = function(url, callback) {
 var cuid = localStorage.getItem("cuid");
 if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
 	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
-		cuid = localStorage.setItem("cuid", messageResponse.currentUser);
+		if ( messageResponse.currentUser === undefined ) {
+			chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+				// request again;
+				console.log(messageResponse.currentUser);
+				cuid = localStorage.setItem("cuid", messageResponse.currentUser);
+			});
+		} else {
+			console.log(messageResponse.currentUser);
+			cuid = localStorage.setItem("cuid", messageResponse.currentUser);
+
+		}
 	});
 }
 
@@ -63,15 +73,7 @@ function ExtractASIN(url){
 }
 var asin = ExtractASIN(window.location.href);
 
-// var imgg = $.map($('.imgTagWrapper img'), function(el){
-// 	return $(el).data();
-// });
-// var listImages = [];
-// for(var i = 0; i < imgg.length; i++){
-// 	listImages.push(imgg[i].oldHires)
-// }
-// var images = JSON.stringify(listImages)
-  var link = window.location.href;
+var link = window.location.href;
 
 var lot = $("#ybr option:selected").val();
 var description = $('#feature-bullets').children('ul').children('li').eq(1).children('span').text();
@@ -197,54 +199,49 @@ function getList(currentUser) {
 						cuid: currentUser,
 						"List Name": $("#ybr option:selected").val() 
 					}),
-					success:function(res){
-								//   console.log(res);
-							}
-						};
-						
-						$.ajax(settings).done(function (response) {
-							let list = $("#ybr option:selected").val();
-							let res = JSON.parse(response)
-							let selected = $("#ybr option:selected").attr("prod");
-							let prod = selected.concat(',', res.id);
-							let prodList = [];
+				};
+				$.ajax(settings).done(function (response) {
+					let list = $("#ybr option:selected").val();
+					let res = JSON.parse(response)
+					let selected = $("#ybr option:selected").attr("prod");
+					let prod = selected.concat(',', res.id);
+					let prodList = [];
 
-							if(selected === 'undefined'){
-								prodList.push(res.id)
-							}
-							else{ prodList = prod.split(',') }
-								console.log(res.id);
-							localStorage.setItem("prodUqId", res.id);
-							prodPageId = res.id;
-							fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
-								method: "PATCH",
-								body: JSON.stringify({
-									Products: prodList
-								}),
-								headers: {
-									"Content-type": "application/json; charset=UTF-8"
-								}
-							}).then((response) =>{
-								alert('Successfully added to list');
-								$('.modal__close').click();
-								button_add.removeChild(addToYbrBtn);
-								button_add.appendChild(deleteFromYbrBtn);
-							}).catch((err) => {
-								alert('Failed adding to list');
-							});
-							
-						}).then((responseJson) => {
-							alert('Successfully saved.');
-						}).catch((err) =>{
-							console.log(err);
-							alert('Something went wrong');
-						});
+					if(selected === 'undefined'){
+						prodList.push(res.id)
 					}
-				},
-				
-				triggerClose: false
+					else{ prodList = prod.split(',') }
+						console.log(res.id);
+					localStorage.setItem("prodUqId", res.id);
+					prodPageId = res.id;
+					fetch("https://ybr.app/version-test/api/1.1/obj/productlist/"+list+"", {
+						method: "PATCH",
+						body: JSON.stringify({
+							Products: prodList
+						}),
+						headers: {
+							"Content-type": "application/json; charset=UTF-8"
+						}
+					}).then((response) =>{
+						alert('Successfully added to list');
+						$('.modal__close').click();
+						button_add.removeChild(addToYbrBtn);
+						button_add.appendChild(deleteFromYbrBtn);
+					}).catch((err) => {
+						alert('Failed adding to list');
+					});
+					
+				}).then((responseJson) => {
+					alert('Successfully saved.');
+				}).catch((err) =>{
+					console.log(err);
+					alert('Something went wrong');
+				});
 			}
-			]);
+		},
+		triggerClose: false
+	}
+	]);
 }
 
 button_add = document.getElementById('title_feature_div');
@@ -272,26 +269,46 @@ addToYbrBtn.addEventListener('click', function() {
 var deleteFromYbrBtn = document.createElement("button");
 deleteFromYbrBtn.id = "btnYbr_danger";
 deleteFromYbrBtn.innerHTML = "<i class='fas fa-trash-alt'></i> Remove from YBR";
-console.log(prodUqId +" "+ cuid)
-var getProduct = 'https://ybr.app/version-test/api/1.1/obj/products_uniques?constraints=[{"key":"asin","constraint_type":"equals","value":"'+asin+'"}, {"key":"cuid","constraint_type":"equals","value":"'+cuid+'"}]';
-getJSON(getProduct,
-    function(err, data) {
-		if (err !== null) {
-			alert('Something went wrong: ' + err);
-		} else {
-			if ( data.response.count > 0 ) {
-				let res = data.response.results;
-				for(var i = 0; i < res.length; i++){
-					prodPageId = res[i]["_id"];
-				}
-				console.log(prodPageId)
-				button_add.appendChild(deleteFromYbrBtn)
+function appendButton(currentUser) {
+	var getProduct = 'https://ybr.app/version-test/api/1.1/obj/products_uniques?constraints=[{"key":"asin","constraint_type":"equals","value":"'+asin+'"}, {"key":"cuid","constraint_type":"equals","value":"'+currentUser+'"}]';
+	getJSON(getProduct,
+		function(err, data) {
+			if (err !== null) {
+				alert('Something went wrong: ' + err);
 			} else {
-				button_add.appendChild(addToYbrBtn)
+				if ( data.response.count > 0 ) {
+					let res = data.response.results;
+					for(var i = 0; i < res.length; i++){
+						prodPageId = res[i]["_id"];
+					}
+					console.log(prodPageId)
+					console.log(currentUser)
+					button_add.appendChild(deleteFromYbrBtn)
+				} else {
+					console.log(currentUser)
+					button_add.appendChild(addToYbrBtn)
+				}
 			}
 		}
-    }
-);
+	);
+}
+
+
+
+if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+		if ( messageResponse.currentUser === undefined ) {
+			chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+				// request again;
+				appendButton(messageResponse.currentUser)
+			});
+		} else {
+			console.log(messageResponse.currentUser);
+			appendButton(messageResponse.currentUser);
+
+		}
+	});
+}
 
 deleteFromYbrBtn.addEventListener('click', function() {
 	//empty produqid
