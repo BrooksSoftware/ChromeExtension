@@ -28,22 +28,6 @@ var getJSON = function(url, callback) {
 };
 
 //get current user id
-var cuid = localStorage.getItem("cuid");
-if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
-	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
-		if ( messageResponse.currentUser === undefined ) {
-			chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
-				// request again;
-				console.log(messageResponse.currentUser);
-				cuid = localStorage.setItem("cuid", messageResponse.currentUser);
-			});
-		} else {
-			console.log(messageResponse.currentUser);
-			cuid = localStorage.setItem("cuid", messageResponse.currentUser);
-
-		}
-	});
-}
 
 //get webpage products
 var products = [];
@@ -293,13 +277,15 @@ function appendButton(currentUser) {
 	);
 }
 
-
-
-if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+if (performance.navigation.type == performance.navigation.TYPE_NAVIGATE
+	|| performance.navigation.type == performance.navigation.TYPE_RELOAD
+	|| performance.navigation.type == performance.navigation.TYPE_BACK_FORWARD
+	|| performance.navigation.type == performance.navigation.TYPE_RESERVED) {
 	chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
 		if ( messageResponse.currentUser === undefined ) {
 			chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
 				// request again;
+				console.log(messageResponse.currentUser);
 				appendButton(messageResponse.currentUser)
 			});
 		} else {
