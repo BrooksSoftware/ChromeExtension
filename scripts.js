@@ -3,7 +3,6 @@ var button = document.createElement("button");
 document.getElementById("stopwatch").appendChild(button);
 console.log("console"+document.getElementById('stopwatch').innerHTML);*/
 
-
 //list of products
 /*parent = document.querySelector('.s-main-slot');
 children = document.querySelectorAll('.s-main-slot .s-result-item');
@@ -269,13 +268,44 @@ function appendButton(currentUser) {
 					console.log(currentUser)
 					button_add.appendChild(deleteFromYbrBtn)
 				} else {
-					console.log(currentUser)
 					button_add.appendChild(addToYbrBtn)
+					console.log(currentUser)
 				}
 			}
 		}
 	);
 }
+
+
+let lastUrl = location.href; 
+new MutationObserver(() => {
+  const url = location.href;
+  if (url !== lastUrl) {
+    lastUrl = url;
+    onUrlChange();
+  }
+}).observe(document, {subtree: true, childList: true});
+ 
+ 
+function onUrlChange() {
+	console.log('neww');
+	if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+		chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+			if ( messageResponse.currentUser === undefined ) {
+				chrome.runtime.sendMessage({getUser: "cuid"}, function(messageResponse) {
+					// request again;
+					appendButton(messageResponse.currentUser)
+				});
+			} else {
+				appendButton(messageResponse.currentUser);
+				console.log(messageResponse.currentUser);
+				
+	
+			}
+		});
+	}
+}
+
 
 if (performance.navigation.type == performance.navigation.TYPE_NAVIGATE
 	|| performance.navigation.type == performance.navigation.TYPE_RELOAD
